@@ -1,0 +1,1780 @@
+1_KODLAR
+
+------------------------------------------------KAYIT SAYFASI/GİRİŞ SAYFASI---------------------------------------------------------------
+
+ $.ajax({
+            type: 'POST',
+            url: 'settings/islem.php?islem=kayit',
+            data: data,
+            success: function (cevap) {
+                $("#ykayitAlert").html(cevap).hide().fadeIn(700);
+                var x = Math.floor((Math.random() * 10) + 1);
+                var y = Math.floor((Math.random() * 10) + 1);
+                $("#frmKayitgiris_dogrulama_text").text(x + "+" + y + " sayılarını toplayarak sonucu giriniz.");
+                $("#frmKayitgiris_dogrulama_input").val(md5(x + y));
+    var check=document.getElementById("frmKayitSozlesme").checked;
+    if(check){
+        $.ajax({
+                type: 'POST',
+                url: 'settings/islem.php?islem=kayit',
+                data: data,
+                success: function (cevap) {
+                    $("#ykayitAlert").html(cevap).hide().fadeIn(700);
+                    var x = Math.floor((Math.random() * 10) + 1);
+                    var y = Math.floor((Math.random() * 10) + 1);
+                    $("#frmKayitgiris_dogrulama_text").text(x + "+" + y + " sayılarını toplayarak sonucu giriniz.");
+                    $("#frmKayitgiris_dogrulama_input").val(md5(x + y));
+                }
+            }
+        }
+    );
+        );
+    }else {
+        alert("Üyelik Sözleşmesini okuyun ve Üyelik Sözleşmesini okudum checkbox'ını işaretleyin.");
+    }
+
+});
+$("#lig_olustur_btn").click(function () {
+    var data = $("#lig_olustur_form").serialize();
+
+**PHP KODU
+<?php
+include "inc/header.php";
+?>
+    <section class="body-sign">
+        <div class="center-sign">
+            <div class="panel panel-sign">
+                <div class="panel-title-sign mt-xl text-right">
+                    <h2 class="title text-uppercase text-weight-bold m-none"><i class="fa fa-user mr-xs"></i>Kayıt</h2>
+                </div>
+                <div class="panel-body">
+                    <!--ALERT-->
+                    <div id="ykayitAlert"></div>
+                    <!--ALERT-->
+                    <form  id="frmKayit" method="post" >
+                        <div class="form-group mb-none">
+                            <div class="row">
+                                <div class="col-sm-6 mb-lg">
+                                    <label>Ad</label>
+                                    <input id="frmKayitAd" name="frmKayitAd" type="text" class="form-control input-lg" />
+                                </div>
+                                <div class="col-sm-6 mb-lg">
+                                    <label>Soyad</label>
+                                    <input id="frmKayitSoyad" name="frmKayitSoyad" type="text" class="form-control input-lg" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-lg">
+                            <label>E-Posta</label>
+                            <input id="frmKayitEmail" name="frmKayitEmail" type="email" class="form-control input-lg" />
+                        </div>
+                        <div class="form-group mb-none">
+                            <div class="row">
+                                <div class="col-sm-6 mb-lg">
+                                    <label>Şifre</label>
+                                    <input id="frmKayitSifre" name="frmKayitSifre"  name="pwd" type="password" class="form-control input-lg" />
+                                </div>
+                                <div class="col-sm-6 mb-lg">
+                                    <label>Yeniden Şifre</label>
+                                    <input  id="frmKayitSifreconfirm" name="frmKayitSifreconfirm"  type="password" class="form-control input-lg" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-none">
+                            <div class="row">
+                                <div class="col-sm-6 mb-lg">
+                                    <label>Doğum Tarihi</label>
+                                    <input id="frmKayitDogum_tar" name="frmKayitDogum_tar" type="date" class="form-control input-lg" />
+                                </div>
+                                <div class="col-sm-6 mb-lg">
+                                    <label>Cep Telefon No</label>
+                                    <input id="frmKayitCepTelNo" name="frmKayitCepTelNo" type="text" data-plugin-masked-input data-input-mask="(999) 999-9999" placeholder="(555) 555-5555" class="form-control input-lg" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-lg">
+                            <div class="clearfix">
+                                <?php
+                                $s1 = rand(1, 9);
+                                $s2 = rand(1, 9);
+                                $t = $s1 + $s2;
+                                $y = md5($t);
+                                ?>
+                                <label class="pull-left" id="frmKayitgiris_dogrulama_text">
+                                    <?php
+                                    echo "$s1+$s2 sayılarının toplamını giriniz.";
+                                    ?>
+                                </label>
+                                <label class="pull-right">Doğrulama</label>
+                                <input id="frmKayitgiris_dogrulama_input" class="form-control form-control-lg" type="hidden"
+                                       value="<?php echo $y; ?>" name="frmKayittoplam">
+                            </div>
+                            <div class="input-group input-group-icon">
+                                <input name="frmKayitdkodu" type="text" class="form-control input-lg" />
+                                <span class="input-group-addon">
+										<span class="icon icon-lg">
+											<i class="fa fa-lock"></i>
+										</span>
+								</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="checkbox-custom checkbox-default">
+                                    <input id="frmKayitSozlesme" name="frmKayitSozlesme" type="checkbox"/>
+                                    <label for="frmKayitSozlesme"><a href="#">Üyelik Sözleşmesi</a>ni kabul ediyorum.</label>
+                                    <label class="mb-xs mt-xs mr-xs modal-with-zoom-anim " href="#modalAnim"><a>Üyelik Sözleşmesi</a>ni kabul ediyorum.</label>
+                                    <!-- Modal Animation -->
+                                    <div id="modalAnim" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+                                        <section class="panel">
+                                            <header class="panel-heading">
+                                                <h2 class="panel-title">Üyelik Sözleşmesi</h2>
+                                            </header>
+                                            <div class="panel-body">
+                                                <div class="modal-wrapper">
+                                                    <p class="p1"><span class="s1"><span style="font-size: 14px; font-family: Arial;">Sitemize üye olmadan önce aşağıda yer alan sözleşmeyi dikkatlice okuyunuz lütfen.</span></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;"><b>1. Taraflar</b></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">a) www.celalkutluer.com.tr internet sitesinin faaliyetlerini yürüten Yozgat adresinde Borsa Yatırım Fantazi Ligi (Bundan böyle Borsa Yatırım Fantazi Ligi olarak anılacaktır).</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">b) www.celalkutluer.com.tr internet sitesine üye olan internet kullanıcısı ("Üye")</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;"><b>2. Sözleşmenin Konusu</b></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">İşbu Sözleşme'nin konusu Borsa Yatırım Fantazi Ligi'nin sahip olduğu internet sitesi www.celalkutluer.com.tr 'dan üyenin faydalanma şartlarının belirlenmesidir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;"><b>3. Tarafların Hak ve Yükümlülükleri</b></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.1. Üye, www.celalkutluer.com.tr internet sitesine üye olurken verdiği kişisel ve diğer sair bilgilerin kanunlar önünde doğru olduğunu, Borsa Yatırım Fantazi Ligi'nin bu bilgilerin gerçeğe aykırılığı nedeniyle uğrayacağı tüm zararları aynen ve derhal tazmin edeceğini beyan ve taahhüt <b>etmez.</b></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.2. Üye, Borsa Yatırım Fantazi Ligi tarafından kendisine verilmiş olan şifreyi başka kişi ya da kuruluşlara veremez, üyenin söz konusu şifreyi kullanma hakkı bizzat kendisine aittir. Bu sebeple doğabilecek tüm sorumluluk ile üçüncü kişiler veya yetkili merciler tarafından Borsa Yatırım Fantazi Ligi'ne karşı ileri sürülebilecek tüm iddia ve taleplere karşı, Borsa Yatırım Fantazi Ligi'nin söz konusu izinsiz kullanımdan kaynaklanan her türlü tazminat ve sair talep hakkı saklıdır.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.3. Üye www.celalkutluer.com.tr internet sitesini kullanırken yasal mevzuat hükümlerine riayet etmeyi ve bunları ihlal etmemeyi baştan kabul ve taahhüt eder. Aksi takdirde, doğacak tüm hukuki ve cezai yükümlülükler tamamen ve münhasıran üyeyi bağlayacaktır.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.4. Üye, www.celalkutluer.com.tr internet sitesini hiçbir şekilde kamu düzenini bozucu, genel ahlaka aykırı, başkalarını rahatsız ve taciz edici şekilde, yasalara aykırı bir amaç için, başkalarının fikri ve telif haklarına tecavüz edecek şekilde kullanamaz. Ayrıca, üye başkalarının hizmetleri kullanmasını önleyici veya zorlaştırıcı faaliyet (spam, virus, truva atı, vb.) ve işlemlerde bulunamaz.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.5. www.celalkutluer.com.tr internet sitesinde üyeler tarafından beyan edilen, yazılan, kullanılan fikir ve düşünceler, tamamen üyelerin kendi kişisel görüşleridir ve görüş sahibini bağlar. Bu görüş ve düşüncelerin Borsa Yatırım Fantazi Ligi'ne hiçbir ilgi ve bağlantısı yoktur. Borsa Yatırım Fantazi Ligi'nin üyenin beyan edeceği fikir ve görüşler nedeniyle üçüncü kişilerin uğrayabileceği zararlardan ve üçüncü kişilerin beyan edeceği fikir ve görüşler nedeniyle üyenin uğrayabileceği zararlardan dolayı herhangi bir sorumluluğu bulunmamaktadır.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.6. Borsa Yatırım Fantazi Ligi, üye verilerinin yetkisiz kişilerce okunmasından ve üye yazılım ve verilerine gelebilecek zararlardan dolayı sorumlu olmayacaktır. Üye, www.celalkutluer.com.tr internet sitesinin kullanılmasından dolayı uğrayabileceği herhangi bir zarar yüzünden Borsa Yatırım Fantazi Liginden tazminat talep etmemeyi peşinen kabul etmiştir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.7. Üye, diğer internet kullanıcılarının yazılımlarına ve verilerine izinsiz olarak ulaşmamayı veya bunları kullanmamayı kabul etmiştir. Aksi takdirde, bundan doğacak hukuki ve cezai sorumluluklar tamamen üyeye aittir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.8. İşbu üyelik sözleşmesi içerisinde sayılan maddelerden bir ya da birkaçını ihlal eden üye işbu ihlal nedeniyle cezai ve hukuki olarak şahsen sorumlu olup, Borsa Yatırım Fantazi Ligi'ni bu ihlallerin hukuki ve cezai sonuçlarından ari tutacaktır. Ayrıca; işbu ihlal nedeniyle, olayın hukuk alanına intikal ettirilmesi halinde, Borsa Yatırım Fantazi Ligi'nin üyeye karşı üyelik sözleşmesine uyulmamasından dolayı tazminat talebinde bulunma hakkı saklıdır.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.9. Borsa Yatırım Fantazi Ligi'nin her zaman tek taraflı olarak gerektiğinde üyenin üyeliğini silme, müşteriye ait dosya, belge ve bilgileri silme hakkı vardır. Üye işbu tasarrufu önceden kabul eder. Bu durumda, Borsa Yatırım Fantazi Ligi'nin hiçbir sorumluluğu yoktur.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.10. www.celalkutluer.com.tr internet sitesi yazılım ve tasarımı Borsa Yatırım Fantazi Ligi mülkiyetinde olup, bunlara ilişkin telif hakkı ve/veya diğer fikri mülkiyet hakları ilgili kanunlarca korunmakta olup, bunlar üye tarafından izinsiz kullanılamaz, iktisap edilemez ve değiştirilemez. Bu web sitesinde adı geçen başkaca şirketler ve ürünleri sahiplerinin ticari markalarıdır ve ayrıca fikri mülkiyet hakları kapsamında korunmaktadır.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.11. Borsa Yatırım Fantazi Ligi tarafından www.celalkutluer.com.tr internet sitesinin iyileştirilmesi, geliştirilmesine yönelik olarak ve/veya yasal mevzuat çerçevesinde siteye erişmek için kullanılan İnternet servis sağlayıcısının adı ve Internet Protokol (IP) adresi, Siteye erişilen tarih ve saat, sitede bulunulan sırada erişilen sayfalar ve siteye doğrudan bağlanılmasını sağlayan Web sitesinin Internet adresi gibi birtakım bilgiler toplanabilir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">&nbsp;</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.12. Borsa Yatırım Fantazi Ligi, üyenin kişisel bilgilerini yasal bir zorunluluk olarak istendiğinde veya (a) yasal gereklere uygun hareket etmek veya Borsa Yatırım Fantazi Ligi'ne tebliğ edilen yasal işlemlere uymak; (b) Borsa Yatırım Fantazi Ligi ve Borsa Yatırım Fantazi Ligi web sitesi ailesinin haklarını ve mülkiyetini korumak ve savunmak için gerekli olduğuna iyi niyetle kanaat getirdiği hallerde açıklayabilir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.13. Borsa Yatırım Fantazi Ligi web sitesinin virus ve benzeri amaçlı yazılımlardan arındırılmış olması için mevcut imkanlar dahilinde tedbir alınmıştır. Bunun yanında nihai güvenliğin sağlanması için kullanıcının, kendi virus koruma sistemini tedarik etmesi ve gerekli korunmayı sağlaması gerekmektedir. Bu bağlamda üye Borsa Yatırım Fantazi Ligi web sitesi'ne girmesiyle, kendi yazılım ve işletim sistemlerinde oluşabilecek tüm hata ve bunların doğrudan yada dolaylı sonuçlarından kendisinin sorumlu olduğunu kabul etmiş sayılır.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.14. Borsa Yatırım Fantazi Ligi, sitenin içeriğini dilediği zaman değiştirme, kullanıcılara sağlanan herhangi bir hizmeti değiştirme yada sona erdirme veya Borsa Yatırım Fantazi Ligi web sitesinde kayıtlı kullanıcı bilgi ve verilerini silme hakkını saklı tutar.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.15. Borsa Yatırım Fantazi Ligi, üyelik sözleşmesinin koşullarını hiçbir şekil ve surette ön ihbara ve/veya ihtara gerek kalmaksızın her zaman değiştirebilir, güncelleyebilir veya iptal edebilir. Değiştirilen, güncellenen yada yürürlükten kaldırılan her hüküm , yayın tarihinde tüm üyeler bakımından hüküm ifade edecektir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.16. Taraflar, Borsa Yatırım Fantazi Ligi'ne ait tüm bilgisayar kayıtlarının tek ve gerçek münhasır delil olarak, HUMK madde 287'ye uygun şekilde esas alınacağını ve söz konusu kayıtların bir delil sözleşmesi teşkil ettiği hususunu kabul ve beyan eder.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">3.17. Borsa Yatırım Fantazi Ligi, iş bu üyelik sözleşmesi uyarınca, üyelerinin kendisinde kayıtlı elektronik posta adreslerine bilgilendirme mailleri ve cep telefonlarına bilgilendirme SMS'leri gönderme yetkisine sahip olmakla beraber, üye işbu üyelik sözleşmesini onaylamasıyla beraber bilgilendirme maillerinin elektronik posta adresine ve bilgilendirme SMS'lerinin cep telefonuna gönderilmesini kabul etmiş sayılacaktır.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;"><b>4. Sözleşmenin Feshi</b></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">İşbu sözleşme üyenin üyeliğini iptal etmesi veya Borsa Yatırım Fantazi Ligi tarafından üyeliğinin iptal edilmesine kadar yürürlükte kalacaktır. Borsa Yatırım Fantazi Ligi üyenin üyelik sözleşmesinin herhangi bir hükmünü ihlal etmesi durumunda üyenin üyeliğini iptal ederek sözleşmeyi tek taraflı olarak feshedebilecektir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;"><b>5. ihtilaflarin Halli</b></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">İşbu sözleşmeye ilişkin ihtilaflarda Yozgat Mahkemeleri ve İcra Daireleri yetkilidir.</span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;"><b>6. Yürürlük</b></span></p>
+                                                    <p class="p1"><span class="s1" style="font-size: 14px; font-family: Arial;">Üyenin, üyelik kaydı yapması üyenin üyelik sözleşmesinde yer alan tüm maddeleri okuduğu ve üyelik sözleşmesinde yer alan maddeleri kabul ettiği anlamına gelir. İşbu Sözleşme üyenin üye olması anında akdedilmiş ve karşılıklı olarak yürürlülüğe girmiştir.</span></p>
+                                                    <p class="p2"><span class="s1"></span></p>
+                                                </div>
+                                            </div>
+                                            <footer class="panel-footer">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-right">
+                                                        <button class="btn btn-default modal-dismiss">Okudum</button>
+                                                    </div>
+                                                </div>
+                                            </footer>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 text-right">
+<?php
+include "baglantilar.php";
+include "fonksiyonlar.php";
+if (g('islem') == 'ygiris') {
+    $eposta = p('eposta');
+    $sifre = p('sifre');
+    $toplam = p('toplam');
+    $dkodu = p('dkodu');
+    if (empty($eposta)) {
+        echo "<div class='alert alert-warning'>Lütfen E-posta adresinizi giriniz.</div>";
+    } else if (empty($sifre)) {
+        echo "<div class='alert alert-warning'>Lütfen Şifrenizi giriniz.</div>";
+    } elseif (empty($dkodu)) {
+        echo "<div class='alert alert-warning'>Lütfen Doğrulama kodunu giriniz.</div>";
+    } elseif ($toplam != md5($dkodu)) {
+        echo "<div class='alert alert-warning'>Doğrulama kodunuz hatalı.</div>";
+    } else {
+        if (isset($_POST['rememberme'])) {
+            setcookie("eposta", $eposta, strtotime("+7 day"));
+            setcookie("sifre", $sifre, strtotime("+7 day"));
+        } else {
+            setcookie("eposta", $eposta, strtotime("-7 day"));
+            setcookie("sifre", $sifre, strtotime("-7 day"));
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        $veri = $db->prepare('SELECT kul_Id, kul_Ad, kul_Soyad, kul_Eposta, kul_Bakiye, kul_Sifre,kul_Yetki,kul_Pasif_Durum,kul_Pasif_Tarih,kul_Pasif_Sure FROM kullanicilar WHERE kul_Eposta=? AND kul_Sifre=?');
+        $veri->execute(array($eposta, md5($sifre)));
+        $v = $veri->fetchAll(PDO::FETCH_ASSOC);
+        $say = $veri->rowCount();
+        foreach ($v as $ykul_bilgileri) ;
+        if ($say) {
+            if ($ykul_bilgileri['kul_Yetki'] == '1' || $ykul_bilgileri['kul_Yetki'] == '0') {
+                if($ykul_bilgileri['kul_Pasif_Durum']=='0')
+                {
+                    ///
+                    $bir=date_format(date_modify(date_create((new \DateTime())->format('Y-m-d H:i:s')),"+1 hours"),"d-m-Y H:i:s");
+                    ///
+                    $datem=date_create($ykul_bilgileri['kul_Pasif_Tarih']);
+                    $sure="+".$ykul_bilgileri['kul_Pasif_Sure']." days";
+                    date_modify($datem,$sure);
+                    $iki=date_format($datem,"d-m-Y H:i:s");
+                    //
+                    if(strtotime($iki)>strtotime($bir)){
+                        echo "<div class='alert alert-danger'>Hesabınız Yönetici tarafından pasife alınmıştır. </div>";
+                        echo "<div class='alert alert-danger'> ".$iki." den önce giriş yapamazsınız.</div>";
+                        echo "<div class='alert alert-danger'>Şu anki zaman :".$bir."</div>";
+                    }
+                    else
+                    {
+                        ///
+                        $kul_gun = $db->prepare("UPDATE kullanicilar SET kul_Pasif_Durum='1' WHERE kul_Id=?");
+                        $kul_gunce = $kul_gun->execute(array($ykul_bilgileri['kul_Id']));
+                        ///
+                        $ekl_log = $db->prepare("INSERT INTO log(log_kul_id, log_eylem, log_aciklama) VALUES ('" . $ykul_bilgileri['kul_Id'] . "','Pasif Süre Dolması','" . $ykul_bilgileri['kul_Id'] . " -Nolu kullanıcı " . $ykul_bilgileri['kul_Ad']. " " . $ykul_bilgileri['kul_Soyad'] . ", pasif kaldığı sürenin dolması nedeniyle aktif duruma getirildi.')");
+                        $eklem_log = $ekl_log->execute(array());
+                        ///
+                    }
+                }
+                else
+                {
+                    $_SESSION['isim'] = $ykul_bilgileri['kul_Ad'];
+                    $_SESSION['soyisim'] = $ykul_bilgileri['kul_Soyad'];
+                    $_SESSION['eposta'] = $ykul_bilgileri['kul_Eposta'];
+                    $_SESSION['yetki'] = $ykul_bilgileri['kul_Yetki'];
+                    $_SESSION['bakiye'] = $ykul_bilgileri['kul_Bakiye'];
+                    $_SESSION['kul_id'] = $ykul_bilgileri['kul_Id'];
+                    echo "<div class='alert alert-success'>Giriş Başarılı Lütfen Bekleyiniz</div><meta http-equiv='refresh' content='1; url=index.php'>";
+                    ///
+                    $kul_gunce = $db->prepare("UPDATE kullanicilar SET kul_Son_Giris_Tar=CURRENT_TIMESTAMP WHERE kul_Id=?");
+                    $kul_guncellemem = $kul_gunce->execute(array($ykul_bilgileri['kul_Id']));
+                    ///
+                    $ekle_log = $db->prepare("INSERT INTO log(log_kul_id, log_eylem, log_aciklama) VALUES ('" . $ykul_bilgileri['kul_Id'] . "','Giriş','" . $ykul_bilgileri['kul_Id'] . " -Nolu kullanıcı " . $ykul_bilgileri['kul_Ad']. " " . $ykul_bilgileri['kul_Soyad'] . ", " . $_SERVER['REMOTE_ADDR'] . " ip adresi üzerinden giriş yaptı.')");
+                    $ekleme_log = $ekle_log->execute(array());
+                    if ($ekleme_log) {
+                        echo "<div class='alert alert-success'>Log Ekleme İşlemi Tamamlandı.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Log Kayıt İşlemi Başarısız.</div>";
+                    }
+                    ///
+                }
+            } else {
+                echo "<div class='alert alert-warning'>Giriş yetkiniz bulunmamaktadır.</div>";
+            }
+        } else {
+            echo "<div class='alert alert-warning'>Böyle Bir Kullanıcı Bulunmamaktadır. Lütfen Kayit olun</div><meta http-equiv='refresh' content='1; url=kayit.php'>";
+        }
+        //////////////////////////////////////////////////////////////////////////////////
+    }
+}
+if (g('islem') == 'cikis') {
+    session_unset();
+    session_destroy();
+    header("Location:../index.php");
+    exit;
+}
+///
+if (g('islem') == 'kayit') {
+    ///
+    $Ad = p('frmKayitAd');
+    $Soyad = p('frmKayitSoyad');
+    $Email = p('frmKayitEmail');
+    $Sifre = p('frmKayitSifre');
+    $Sifreconfirm = p('frmKayitSifreconfirm');
+    $Dogum_tar = p('frmKayitDogum_tar');
+    $CepTelNo = NumarayiFormatla(p('frmKayitCepTelNo'));
+    ///
+    $toplam = p('frmKayittoplam');
+    $dkodu = p('frmKayitdkodu');
+    ///
+    //$Sozlesme = p('frmKayitSozlesme');
+    ///
+    if (empty($Ad)) {
+        echo "<div class='alert alert-warning'>Lütfen Adınızı giriniz.</div>";
+    } else if (empty($Soyad)) {
+        echo "<div class='alert alert-warning'>Lütfen Soyadınızı giriniz.</div>";
+    } else if (empty($Email)) {
+        echo "<div class='alert alert-warning'>Lütfen E-posta adresinizi giriniz.</div>";
+    } else if (empty($Sifre)) {
+        echo "<div class='alert alert-warning'>Lütfen Şifrenizi giriniz.</div>";
+    } else if (empty($Sifreconfirm)) {
+        echo "<div class='alert alert-warning'>Lütfen Şifrenizi tekrar giriniz.</div>";
+    } else if (empty($Dogum_tar)) {
+        echo "<div class='alert alert-warning'>Lütfen Doğum Tarihinizi giriniz.</div>";
+    } else if (empty($CepTelNo)) {
+        echo "<div class='alert alert-warning'>Lütfen Cep Telefon Numaranızı giriniz.</div>";
+    } elseif (empty($dkodu)) {
+        echo "<div class='alert alert-warning'>Lütfen Doğrulama kodunu giriniz.</div>";
+    } elseif ($toplam != md5($dkodu)) {
+        echo "<div class='alert alert-warning'>Doğrulama kodunuz hatalı.</div>";
+    } elseif (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+        echo "<div class='alert alert-warning'>Eposta adresi hatalı.</div>";
+    }
+    else {
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        $veri1 = $db->prepare('SELECT kul_Eposta FROM kullanicilar WHERE kul_Eposta=?');
+        $veri1->execute(array($Email));
+        $v1 = $veri1->fetchAll(PDO::FETCH_ASSOC);
+        $say1 = $veri1->rowCount();
+        foreach ($v1 as $kul_kayit) ;
+        if (!$say1) {
+            $ekle = $db->prepare("INSERT INTO kullanicilar(kul_Ad, kul_Soyad, kul_Eposta,kul_Eposta_Dogrulama_Kod, kul_CepNo, kul_DogumTar, kul_Sifre) 
+VALUES ('" . $Ad . "','" . $Soyad . "','" . $Email . "','" . sha1(md5($Email)) . "','" . $CepTelNo . "','" . $Dogum_tar . "','" . md5($Sifre) . "')");
+            $ekleme = $ekle->execute(array());
+            if ($ekleme) {
+                /*
+                require '../vendor/autoload.php';
+                $email = new \SendGrid\Mail\Mail();
+                $email->setFrom("celalkutluer@gmail.com", "Celal KUTLUER");
+                $email->setSubject("Üyelik Hakkında");
+                $email->addTo($Email, $Ad . " " . $Soyad);
+                $email->addContent(
+                    "text/html", "<strong >Üyeliğiniz oluşturulmuştur.</strong></br>
+                                                <a href=  'kayit-dogrulama.php?dogrulama=" . sha1(md5($Email)) . "'>
+                                                    Eposta adresinizi doğrulamak için tıklayınız.
+                                                </a>"
+                );
+                $key = '';
+                /* $sendgrid = new \SendGrid($key);
+                 try {
+                     $response = $sendgrid->send($email);
+                     if($response->statusCode()=="202"){
+                         echo "<div class='alert alert-success'>Kayit işleminiz başarı ile gerçekleştirildi. E-posta adresinize doğrulama kodu gönderildi.</div>";//<meta http-equiv='refresh' content='1; url=giris.php'>
+                     }
+                 } catch (Exception $e) {
+                     echo 'Caught exception: '. $e->getMessage() ."\n";
+                 }*/
+                echo "<div class='alert alert-success'>Kayit işleminiz başarı ile gerçekleştirildi.</div><meta http-equiv='refresh' content='1; url=giris.php'>";// E-posta adresinize doğrulama kodu gönderildi.
+                //
+                $veri_log = $db->prepare('SELECT kul_id FROM kullanicilar WHERE kul_Eposta=?');
+                $veri_log->execute(array($Email));
+                $v_log = $veri_log->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($v_log as $kul_kayit_log) ;
+                ////////////////////////////
+                $ekle_log = $db->prepare("INSERT INTO log(log_kul_id, log_eylem, log_aciklama) VALUES ('" . $kul_kayit_log['kul_id'] . "','Üyelik Kaydı','" . $kul_kayit_log['kul_id'] . " -Nolu kullanıcı " . $Ad. " " . $Soyad . ", " . $_SERVER['REMOTE_ADDR'] . " ip adresi üzerinden " . $Email . " e-posta adresi ile üyelik başvurusunda bulundu.')");
+                $ekleme_log = $ekle_log->execute(array());
+                if ($ekleme_log) {
+                    echo "<div class='alert alert-success'>Log Ekleme İşlemi Tamamlandı.</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Log Kayıt İşlemi Başarısız.</div>";
+                }
+                //
+            } else {
+                echo "<div class='alert alert-danger'>Kayit işlemi sırasında bir hata meydana geldi</div>";
+            }
+        } else {
+            echo "<div class='alert alert-info'>Eposta adresinize tanımlı üyelik mevcut. Lütfen Giriş yapınız.</div><meta http-equiv='refresh' content='1; url=giris.php'>";
+        }
+    }
+}
+///
+if (g('islem') == 'lig_olustur') {
+    ///
+    $baslik = p('lig_olustur_baslık');
+    $duyuru = p('lig_olustur_duyuru');
+    if (empty($baslik)) {
+        echo "<div class='alert alert-warning'>Lütfen Lig Başlığı Yazın.</div>";
+    } else if (empty($duyuru)) {
+        echo "<div class='alert alert-warning'>Lütfen Lig Duyurusu Yazın.</div>";
+    } else {
+        $veri = $db->prepare('SELECT kul_lig_id,kul_Ad,kul_Soyad FROM kullanicilar WHERE kul_Id=?');
+        $veri->execute(array($_SESSION['kul_id']));
+        $v = $veri->fetchAll(PDO::FETCH_ASSOC);
+        $say = $veri->rowCount();
+        foreach ($v as $ligler) ;
+        //
+        $veri = $db->prepare('SELECT lig_baslik FROM ligler WHERE lig_baslik=?');
+        $veri->execute(array($baslik));
+        $v = $veri->fetchAll(PDO::FETCH_ASSOC);
+        $say = $veri->rowCount();
+        foreach ($v as $ligler) ;
+        if (!$say) {
+            $ekle = $db->prepare("INSERT INTO ligler( lig_baslik, lig_duyuru, lig_bos_uyelik, lig_yonetici_id) VALUES ('" . $baslik . "','" . $duyuru . "',9,'" . $_SESSION['kul_id'] . "')");
+            $ekleme = $ekle->execute(array());
+            //
+            $veri = $db->prepare('SELECT lig_id FROM ligler WHERE lig_baslik=?');
+            $veri->execute(array($baslik));
+            $v = $veri->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($v as $ligle) ;
+            //
+            $kul_gunce = $db->prepare("UPDATE kullanicilar SET kul_lig_id='" . $ligle['lig_id'] . "' WHERE kul_Id=?");
+            $kul_guncell = $kul_gunce->execute(array($_SESSION['kul_id']));
+            if ($ekleme || $kul_guncell) {
+                echo "<div class='alert alert-success'>Lig Kayıt İşleminiz Gerçekleşti.</div><meta http-equiv='refresh' content='1; url=ligler.php'>";
+                //
+                $ekle_log = $db->prepare("INSERT INTO log(log_kul_id, log_eylem, log_aciklama) VALUES ('" . $_SESSION['kul_id'] . "','Lig Oluşturma','" . $_SESSION['kul_id'] . " -Nolu kullanıcı " . $ligler['kul_Ad'] . " " . $ligler['kul_Soyad'] . " " . $ligle['lig_id'] . " nolu " . $baslik . " ligini oluşturdu.')");
+                $ekleme_log = $ekle_log->execute(array());
+                if ($ekleme_log) {
+                    echo "<div class='alert alert-success'>Log Ekleme İşlemi Tamamlandı.</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Log Kayıt İşlemi Başarısız.</div>";
+                }
+            } else {
+                echo "<div class='alert alert-success'>Lig Kayıt İşlemi Başarısız oldu</div>";
+                echo "<div class='alert alert-danger'>Lig Kayıt İşlemi Başarısız oldu</div>";
+            }
+        } else {
+            echo "<div class='alert alert-success'>Girilen Lig Başlığı Mevcut. Başka Bir Lig Başlığı Deneyin.</div>";
+            echo "<div class='alert alert-danger'>Girilen Lig Başlığı Mevcut. Başka Bir Lig Başlığı Deneyin.</div>";
+
+        }
+    }
+
+----------------------------------------------------------INDEX------------------------------------------------------------
+**PHP KODU
+<? php?  içermektedir  "inc / header.php" ;
+
+$ link = "http://bigpara.hurriyet.com.tr/borsa/canli-borsa/" ;
+$ İcerik = file_get_contents ( $ linki );
+$ icerik = preg_replace ( '~ [\ r \ n] ~' , '' , $ icerik );
+$ icerik = preg_replace ( '~ [] ~' , '' , $ icerik );
+///
+$ h_td_sembol = dizi ();
+$ h_td_sembol = ara ( 'target = "_ blank">' , '</a>' , $ icerik ); / / hisse adlarının dizisi [0] - [99] arası 100 hisse
+$ h_td_sembol = ara ( 'target = "_ blank">' , '</a>' , $ icerik ); / * hisse adlarının dizisi [0] - [99] arası 100 hisse * /
+$ tum_hisse_dizileri = dizi ();
+///
+$ komisyon = 1.003 ;
+?>
+$ komisyon = 1.003 ; ?>
+< section  role = " ana " sınıf = " içerik-gövde " >
+    < section  class = " section bg-color-quy " >
+        < section  class = " section bg-renk-kuaterner özel dolgu-4 border-0 my-0 " >
+            < div  class = " container " >
+                < div  class = " satır mb-3 " >
+                    < div  class = " col " >
+
+                        < div  class = " satır hizalama öğeleri merkezi " >
+                            < div  class = " col-lg-6 " >
+                                <! - masa duyarlı-lg ->
+                                < table  class = " table table-bordered table-strip table-sm mb-0 " >
+                                    < h3  class = " özel-birincil-yazı tipi metin merkezi özel-yazı tipi boyutu-3 yazı tipi-ağırlık-normal "
+                                    > En Çok Yükselenler </ h3 >
+                            < div  class = " col-lg-6 " >  <! - tabloya duyarlı-lg ->
+                                < table  class = " table table-bordered table-strip table-sm mb-0 " > < h3
+                                            class = " özel-birincil-yazı tipi metin merkezi özel-yazı tipi boyutu-3 yazı tipi-ağırlık-normal " >
+                                        En Çok Yükselenler </ h3 >
+                                    < Thead >
+                                    < tr >
+                                        < th  class = " metin merkezi " kapsam = " col " > Menkul Adı </ th >
+@@ -32,45 +26,37 @@
+                                        < th  class = " text-center " scope = " col " > (%) Fark </ th >
+                                    </ tr >
+                                    </ thead >
+                                    < tbody >
+                                    <? Php
+                                    için ( $ sayi = 0 ; $ sayi < 100 ; $ sayi ++) {
+                                    < tbody >  <? php for ( $ sayi = 0 ; $ sayi < 100 ; $ sayi ++) {
+                                        $ tum_hiss = dizi ();
+                                        $ hisse_tekil_yuzde = ara ( 'h_td_yuzde_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                                        $ hisse_tekil_fiyat = ara ( 'h_td_fiyat_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                                        array_push ( $ tum_hiss , $ h_td_sembol [ $ sayi ], convert_virgül_nokta ( $ hisse_tekil_yuzde [ 0 ]), convert_virgül_nokta ( $ hisse_tekil_fiyat [ 0 ]));
+                                        array_push ( $ tum_hisse_dizileri , $ tum_hiss );
+
+                                    }
+                                    $ sıralanmış = val_sort ( $ tum_hisse_dizileri , 1 ); // 1 = Yüzde
+                                    için ( $ sayi = 99 ; $ sayi > 94 ; $ sayi -) {
+                                        ?>
+                                    $ sıralanmış = val_sort ( $ tum_hisse_dizileri , 1 ); / * 1 = Yüzde * /
+                                    ( $ sayi = 99 ; $ sayi > 94 ; $ sayi -) { ?>
+                                        < tr >
+                                            < td  class = " metin merkezi "
+                                                id = " hisse_yukselen_sembol_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ sıralanmış [ $ sayi ] [ 0 ]; ?> </ td >
+                                            < td  class = " text-center " > < i  id = " hisse_yukselen_durum_ <? php  echo  $ sayi ; ?> "
+                                                                       class = " <? php
+                                                                       if ( convert_virgül_nokta ( $ sıralanmış [ $ sayi ] [ 1 ])> 0 ) {
+                                                                       class = " <? php  if ( convert_virgül_nokta ( $ sıralanmış [ $ sayi ] [ 1 ])> 0 ) {
+                                                                           echo  "fas fa-ok-daire-yukarı metin-başarı" ;
+                                                                       } elseif ( convert_virgül_nokta ( $ sıralanmış [ $ sayi ] [ 1 ]) == 0 ) {
+                                                                           echo  "fas fa-minus text-info" ;
+                                                                       } başka {
+                                                                           echo  "fas fa-arrow-circle-down metin tehlikesi" ;
+                                                                       }
+                                                                       ?> " > </ i > </ td >
+                                                                       } ?> " > </ i > </ td >
+                                            < td  class = " metin merkezi "
+                                                id = " hisse_yukselen_son_deger_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ sıralanmış [ $ sayi ] [ 2 ]; ?> </ td >
+                                            < td  class = " metin merkezi "
+                                                id = " hisse_yukselen_fark_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ sıralanmış [ $ sayi ] [ 1 ]; ?> </ td >
+                                        </ tr >
+                                    <? php } ?>
+                                    </ tbody >
+                                        </ tr >  <? php } ?>  </ tbody >
+                                </ tablo >
+                            </ div >
+                            < div  class = " col-lg-6 " >
+                                < table  class = " table table-bordered table-strip table-sm mb-0 " >
+                                    < h3 class = " özel-birincil-yazı tipi metin merkezi özel-yazı tipi boyutu-3 yazı tipi-ağırlık-normal " 
+                                    > En Çok Düşenler </ h3 >
+                                < table  class = " table table-bordered table-strip table-sm mb-0 " > < h3
+                                            class = " özel-birincil-yazı tipi metin merkezi özel-yazı tipi boyutu-3 yazı tipi-ağırlık-normal " >
+                                        En Çok Düşenler </ h3 >
+                                    < Thead >
+                                    < tr >
+                                        < th  class = " metin merkezi " kapsam = " col " > Menkul Adı </ th >
+@@ -79,30 +65,23 @@ class = "<? Php
+                                        < th  class = " text-center " scope = " col " > (%) Fark </ th >
+                                    </ tr >
+                                    </ thead >
+                                    < tbody >
+                                    <? Php
+                                    için ( $ sayi = 0 ; $ sayi < 5 ; $ sayi ++) {
+                                        ?>
+                                    < tbody >  <? php for ( $ sayi = 0 ; $ sayi < 5 ; $ sayi ++) { ?>
+                                        < tr >
+                                            < td  class = " metin merkezi "
+                                                id = " hisse_dusen_sembol_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ sıralanmış [ $ sayi ] [ 0 ]; ?> </ td >
+                                            < td  class = " text-center " > < i  id = " hisse_dusen_durum_ <? php  echo  $ sayi ; ?> "
+                                                                       class = " <? php
+                                                                       if ( convert_virgül_nokta ( $ sıralanmış [ $ sayi ] [ 1 ])> 0 ) {
+                                                                       class = " <? php  if ( convert_virgül_nokta ( $ sıralanmış [ $ sayi ] [ 1 ])> 0 ) {
+                                                                           echo  "fas fa-ok-daire-yukarı metin-başarı" ;
+                                                                       } elseif ( convert_virgül_nokta ( $ sıralanmış [ $ sayi ] [ 1 ]) == 0 ) {
+                                                                           echo  "fas fa-minus text-info" ;
+                                                                       } başka {
+                                                                           echo  "fas fa-arrow-circle-down metin tehlikesi" ;
+                                                                       }
+                                                                       ?> " > </ i > </ td >
+                                                                       } ?> " > </ i > </ td >
+                                            < td  class = " metin merkezi "
+                                                id = " hisse_dusen_son_deger_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ sıralanmış [ $ sayi ] [ 2 ]; ?> </ td >
+                                            < td  class = " metin merkezi "
+                                                id = " hisse_dusen_fark_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ sıralanmış [ $ sayi ] [ 1 ]; ?> </ td >
+                                        </ tr >
+                                    <? php } ?>
+                                    </ tbody >
+                                        </ tr >  <? php } ?>  </ tbody >
+                                </ tablo >
+                            </ div >
+                        </ div >
+@@ -111,8 +90,8 @@ class = "<? Php
+            </ div >
+        </ bölüm >
+        < section  class = " section bg-renk-kuaterner özel dolgu-4 border-0 my-0 " >
+            < div  class = " table-active " >
+                < h2 class = " özel-birincil-yazı tipi metin merkezi özel-yazı tipi-3 yazı tipi-ağırlık-normal " > BİST100 Hisse Verileri </ h2 > 
+            < div  class = " table-active " > < h2 class = " custom-birincil-font metin merkezi custom-fontsize-3 font-weight-normal " > 
+                    BİST100 Hisse Verileri </ h2 >
+                < table  class = " table tablo-bordered tablo-çizgili mb-none " id = " datatable-default " >
+                    < Thead >
+                    < tr >
+@@ -125,42 +104,32 @@ class = "<? Php
+                        < th  class = " text-center hidden-xs " scope = " col " > En Yüksek </ th >
+                        < th  class = " text-center hidden-xs " scope = " col " > Hacim (Parti) </ th >
+                        < th  class = " text-center hidden-xs " scope = " col " > Hacim (TL) </ th >
+                        < th  class = " text-center hidden-xs " scope = " col " > Zaman </ th >
+                        <? Php
+                        if ( isset ( $ _SESSION [ 'yetki' ]))) {
+                            echo  "<th class = 'metin merkezi' scope = 'col'> Alış </th>
+                              <th class = 'text-center' scope = 'col'> Satış </th> " ;
+                        }
+                        ?>
+                    </ tr >
+                        < th  class = " text-center hidden-xs " scope = " col " > Zaman </ th >  <? php  if ( isset ( $ _SESSION [ 'yetki' ]))) {
+                            echo  "<th class = 'metin merkezi' scope = 'col'> Alış </th> <th class = 'text-center' scope = 'col'> Satış </th>" ;
+                        } ?>  </ tr >
+                    </ thead >
+                    < tbody >
+                    <? Php
+                    için ( $ sayi = 0 ; $ sayi < 100 ; $ sayi ++) {
+                    ///
+                    < Tbody >  <? Php? İçin ( $ sayi = 0 ;
+                    $ sayi < 100 ;
+                    $ sayi ++) {
+                    $ h_td_yuzde_id_deger = ara ( 'h_td_yuzde_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    $ h_td_fiyat_id_deger = ara ( 'h_td_fiyat_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    $ h_td_farktl_id_deger = ara ( 'h_td_farktl_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    $ h_td_dusuk_id_deger = ara ( 'h_td_dusuk_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    $ h_td_yuksek_id_deger = ara ( 'h_td_yuksek_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    $ h_td_hacimlot_id_deger = ara ( 'h_td_hacimlot_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    $ h_td_hacimtl_id_deger = ara ( 'h_td_hacimtl_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    $ h_td_saat_id_deger = ara ( 'h_td_saat_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik );
+                    ///
+                    ?>
+                    $ h_td_saat_id_deger = ara ( 'h_td_saat_id_' . $ h_td_sembol [ $ sayi ]. '">' , '</li>' , $ icerik ); ?>
+                    < tr >
+                        < td  class = " metin merkezi "
+                            id = " hisse_sembol_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ h_td_sembol [ $ sayi ]; ?> </ td >
+                        < td  class = " text-center " > < i  id = " hisse_durum_ <? php  echo  $ sayi ; ?> " class = "
+                        <? Php
+                            if ( convert_virgül_nokta ( $ h_td_yuzde_id_deger [ 0 ])> 0 ) {
+                                echo  "fas fa-ok-daire-yukarı metin-başarı" ;
+                            } elseif ( convert_virgül_nokta ( $ h_td_yuzde_id_deger [ 0 ]) == 0 ) {
+                                echo  "fas fa-minus text-info" ;
+                            } başka {
+                                echo  "fas fa-arrow-circle-down metin tehlikesi" ;
+                            }
+                            ?> " > </ i > </ td >
+                        < td  class = " text-center " > < i  id = " hisse_durum_ <? php  echo  $ sayi ; ?> "
+                                                   class = " <? php if ( convert_virgül_nokta ( $ h_td_yuzde_id_deger [ 0 ])> 0 ) {  
+                                                       echo  "fas fa-ok-daire-yukarı metin-başarı" ;
+                                                   } elseif ( convert_virgül_nokta ( $ h_td_yuzde_id_deger [ 0 ]) == 0 ) {
+                                                       echo  "fas fa-minus text-info" ;
+                                                   } başka {
+                                                       echo  "fas fa-arrow-circle-down metin tehlikesi" ;
+                                                   } ?> " > </ i > </ td >
+                        < td  class = " metin merkezi "
+                            id = " hisse_son_deger_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ h_td_fiyat_id_deger [ 0 ]; ?> </ td >
+                        < td  class = " center hidden-xs "
+@@ -176,205 +145,201 @@ class = "<? Php
+                        < td  class = " center hidden-xs "
+                            id = " hisse_hacim_tl_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ h_td_hacimtl_id_deger [ 0 ]; ?> </ td >
+                        < td  class = " center hidden-xs "
+                            id = " hisse_zaman_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ h_td_saat_id_deger [ 0 ]; ?> </ td >
+                        <? php  if ( isset ( $ _SESSION [ 'yetki' ]))) {
+                            echo  "
+                            <td class = 'text-center' id = 'hisse_alis_ " . $ sayi . "'>
+                                <button id = 'btn_hisse_alis_ " . $ sayi . "' type = 'button' class = 'btn btn-başarı' form ile modal-form 'href =' # modalAlForm " . $ sayi . " '> AL </button>
+                                
+                                <div class = 'modal-blok modal-başlık-renk modal-blok-başarı mfp-hide' id = 'modalAlForm " . $ sayi . "'>
+                            id = " hisse_zaman_ <? php  echo  $ sayi ; ?> " > <? php  echo  $ h_td_saat_id_deger [ 0 ]; ?> </ td >  <? php  if ( isset ( $ _SESSION [ 'yetki' ])) { ?>
+                            < td  class = ' text-center ' id = ' hisse_alis_ <? php  echo  $ sayi ; ?> ' >
+                                < düğme  id = ' btn_hisse_alis_ <? php  echo  $ sayi ; ?> ' type =' düğme '
+                                        class = ' btn btn-başarı formlu modal ' href = ' #modalAlForm <? php  echo  $ sayi ; ?> ' >
+                                    AL
+                                </ düğmesi >
+                                < div  class = ' modal-blok modal-başlık-renk modal-blok-başarı mfp-hide '
+                                     id = ' modalAlForm <? php  echo  $ sayi ; ?> ' >
+                                    < section  class = ' panel ' >
+                                            <header class = 'panel heading'>
+                                                <h4 class = 'panel-title' id = 'formModalLabel'> Satın Al </h4>
+                                            </ Pompa çıkışı>
+                                            <div class = 'panel-body'>
+                                                <! - UYARI ->
+                                                <div id = 'hisse_alim_alert'> </div>
+                                                <! - UYARI ->
+                                                <form id = 'hisse_alim_form_ " . $ sayi . "' class = 'mb-4' novalidate = 'novalidate'>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Hisse Adı: </label>
+                                                        <label id = 'hisse_alim_form_sembol_ " . $ sayi . "' class = 'col-sm-7 metin merkezi mb-0'> " . $ h_td_sembol [ $ sayi ]. " </label>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Alış Tutarı: </label>
+                                                        <label id = 'hisse_deger_alim_ " . $ sayi . "' class = 'col-sm-7 metin merkezi mb-0'> " . convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]). " </label>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Bakiyeniz: </label>
+                                                        <label class = 'col-sm-4 text-right mb-0'> " . $ _SESSION [ 'bakiye' ]. " </label> <span class = 'col-sm-4 metin-sol mb-0' > & # x20BA; </ span>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Alınmak İstenen Belirt: </label>
+                                                        <div class = 'col-sm-7 metin merkezi'>
+                                                            <input id = 'range_ " . $ sayi . "' type = 'range' min = '1' max = '" . intval ( $ _SESSION [ ' bakiye ' ]) / ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]) ) * $ komisyon ). "'onchange =' alis_hesapla" . $ sayi . "() '/>
+                                                            <output id = 'rangevalue " . $ sayi . "'> " ;
+                            if (( intval ( $ _SESSION [ 'bakiye' ]) / ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * $ komisyon ) * 0.5 )> = 1 ) {
+                                $ range_ = intval ( intval ( $ _SESSION [ 'bakiye' ]) / ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * $ komisyon ) * 0.5 );
+                            } elseif ( $ _SESSION [ 'bakiye' ]> convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) { $ range_ = 1 ;} başka { $ range_ = 0 ;}
+                            yankı  "" . $ range_ . "</ çıkış>
+                                                        </ Div>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Komisyon (Binde 3): </label>
+                                                        <label id = 'komisyon " . $ sayi . "' class = 'col-sm-4 text-right mb-0'> " . round ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * ( $ komisyon - 1 ) *   $ range_ , 2 ). "</label> <span class = 'col-sm-4 metin-sol mb-0'> & # x20BA; </span>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Toplam Ödenecek Tutar: </label>
+                                                        <label id = 'toplam_odenecek_alim_tutar " . $ sayi . "' class = 'col-sm-4 metin-sağ mb-0'>
+                                                        " . round ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * ( $ komisyon ) * $ range_ , 2 ). "
+                                                       </ Label>
+                                                       <Script>
+                                                        işlev alis_hesapla " . $ sayi . " () {
+                                                            var alis = $ ('# hisse_deger_alim_ " . $ sayi . "') .text ();
+                                                            var miktar = $ ('# range_ " . $ sayi . "') .val ();
+                                                            $ ('# rangevalue " . $ sayi . "') .text ($ ('# range_ " . $ sayi . "') .val ());
+                                                            $ ('# komisyon " . $ sayi . "') .text ((alis * miktar * (" . $ komisyon . " -1)). toFixed (2));
+                                                            $ ('# toplam_odenecek_alim_tutar " . $ sayi . "') .text ((alis * miktar * (" . $ komisyon . ")). toFixed (2));
+                                                        }
+                                                        </ Script>
+                                                       <span class = 'col-sm-4 metin-sol mb-0'> & # x20BA; </span>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-12 metin merkezi mb-0'>    
+                                                        " ;
+                            if ( $ range_ == 0 ) { echo  "Yeterli Bakiyeniz Bulunmaktadır." ; }
+                            echo  "                                                    
+                                                        </ Label>
+                                                    </ Div>
+                                                </ Form>
+                                            </ Div>
+                                            <div class = 'panel-footer'>
+                                                <div class = 'row'>
+                                                    <div class = 'col-md-12 text-right'>
+                                                        <düğme türü = 'düğme' sınıf = 'btn btn-light modal-dismiss'> Kapat </button>
+                                                        <button type = 'button' id = 'hisse_al_btn_ " . $ sayi . "' type = 'gönder' class = 'btn btn-success' onclick = " . chr ( 34 ). " alim_btn_func (" . " '" . $ sayi . "'" . ")" . chr ( 34 );
+                            eğer ( $ range_ == 0 ) { echo  "özürlü" ; }
+                            echo  "> Satın Al </button>
+                                        < header  class = ' panel-heading ' > < h4  class = ' panel-title ' id = ' formModalLabel ' > Satın Al
+                                                Al </ h4 > </ başlık >
+                                        < div  class = ' panel-body ' >  <! - UYARI ->
+                                            < div  id = ' hisse_alim_alert ' > </ div >  <! - UYARI ->
+                                            < form  id = ' hisse_alim_form_ <? php  echo  $ sayi ; ?> ' class =' mb-4 '
+                                                  novalidate = ' novalidate ' >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Hisse
+                                                        Adı: </ label >  < label
+                                                            id = ' hisse_alim_form_sembol_ <? php  echo  $ sayi ; ?> '
+                                                            class = ' col-sm-7 metin merkezi mb-0 ' > <? php  echo  $ h_td_sembol [ $ sayi ]; ?> </ label >
+                                                </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Alış
+                                                        Tutarı: </ etiket >  < etiket
+                                                            id = ' hisse_deger_alim_ <? php  echo  $ sayi ; ?> '
+                                                            class = ' col-sm-7 metin merkezi mb-0 ' > <? php  echo  convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]); ?> </ label >
+                                                </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Bakiyeniz: </ label >
+                                                    < label  class = ' col-sm-4 text-right mb-0 ' > <? php  echo  $ _SESSION [ 'bakiye' ]; ?> </ label > < span
+                                                            class = ' col-sm-4 metin-sol mb-0 ' > & # x20BA; </ span > </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Alınmak
+                                                        İstenen İstatistik: </ label >
+                                                    < div  class = ' col-sm-7 text-center ' > < giriş
+                                                                id = ' aralık_ <? php  echo  $ sayi ; ?> ' type =' aralık ' dk =' 1 '
+                                                                max = ' <? php  yankı  aralığı ( $ _SESSION [ ' bakiye ' ]) / ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * $ komisyon ); ?> '
+                                                                onchange = ' alis_hesapla <? php  echo  $ sayi ; ?> () '/>
+                                                        < output  id = ' rangevalue <? php  echo  $ sayi ; ?> ' >  <? php  if (( intval ( $ _SESSION [ ' bakiye ' ]) / ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * $ komisyon ) * 0.5 )> = 1 ) {
+                                                                $ range_ = intval ( intval ( $ _SESSION [ 'bakiye' ]) / ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * $ komisyon ) * 0.5 );
+                                                            } elseif ( $ _SESSION [ 'bakiye' ]> convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) {
+                                                                $ aralık_ = 1 ;
+                                                            } başka {
+                                                                $ aralık_ = 0 ;
+                                                            } ?> <? php  echo  $ range_ ; ?>  </ output >
+                                                    </ div >
+                                                </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Komisyon (Binde
+                                                        3): </ label >  < label  id = ' komisyon <? Php  echo  $ sayi ; ?> '
+                                                                            class = ' col-sm-4 text-right mb-0 ' > <? php  echo  round ( şamandıra ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]))) * ( $ komisyon - 1 ) * $ range_ , 2 ); ?> </ label > < span
+                                                            class = ' col-sm-4 metin-sol mb-0 ' > & # x20BA; </ span > </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Toplam
+                                                        Ödenecek Tutar: </ label >  < label
+                                                            id = ' toplam_odenecek_alim_tutar <? php  echo  $ sayi ; ?> '
+                                                            class = ' col-sm-4 text-right mb-0 ' > <? php  echo  round ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]))) * ( $ komisyon ) * $ range_ , 2 ); ?>  </ label >
+                                                    < script  type = " text / javascript " >  fonksiyon  alis_hesapla <? php  echo  $ sayi ; ?> ( )  {
+                                                            var  alis  =  $ ( '#hisse_deger_alim_ <? php  echo  $ sayi ; ?> ' ) . metin ( ) ;
+                                                            var  miktar  =  $ ( '#range_ <? php  echo  $ sayi ; ?> ' ) . val ( ) ;
+                                                            $ ( '#rangevalue <? php  echo  $ sayi ; ?> ' ) . metin ( $ ( '#range_ <? php  echo  $ sayi ; ?> ' ) . val ( ) ) ;
+                                                            $ ( '#komisyon <? php  echo  $ sayi ; ?> ' ) . metin ( ( alis * miktar * ( <? php  echo  $ komisyon ; ?>  - 1 ) ) . toFixed ( 2 ) ) ;
+                                                            $ ( '#toplam_odenecek_alim_tutar <? php  echo  $ sayi ; ?> ' ) . metin ( ( alis * miktar * ( <? php  echo  $ komisyon ; ?> ) ) . toFixed ( 2 ) ) ;
+                                                        }  </ script >
+                                                    < span  class = ' col-sm-4 text-left mb-0 ' > & # x20BA; </ span > </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-12 metin merkezi mb-0 ' >  <? php  if ( $ range_ == 0 ) {
+                                                            echo  "Yeterli Bakiyeniz Bulun göre." ;
+                                                        } ?>  </ label > </ div >
+                                            </ form >
+                                        </ div >
+                                        < div  class = ' panel-footer ' >
+                                            < div  class = ' row ' >
+                                                < div  class = ' col-md-12 text-right ' >
+                                                    < düğme  türü = ' düğme ' sınıf = ' btn btn-light modal-dismiss ' > Kapat
+                                                    </ düğmesi >
+                                                    < düğme  türü = ' düğme ' id = ' hisse_al_btn_ <? php  echo  $ sayi ; ?> '
+                                                            type = ' gönder ' sınıf = ' btn btn-success '
+                                                            onclick = " alim_btn_func (' <? php  echo  $ sayi ; ?> ') " <? php  if ( $ range_ == 0 ) {
+                                                        yankı  "devre dışı" ;
+                                                    } ?>  > Satýn Al
+                                                    </ düğmesi >
+                                                </ div >
+                                            </ div >
+                                        </ div >
+                                    </ bölüm >
+                                </ div >
+                            </td> " ;
+                            ?>
+
+                            <? Php
+                            //
+                            $ veri = $ db -> hazırlayın ( 'SELECT varlik_elde FROM varliklar NEREDE varlik_kul_id =? ve varlik_hisse_sembol =?' );
+                            </ td >  <? php  $ veri = $ db -> hazırlayın ( 'SELECT varlik_elde FROM varliklar WHERE varlik_kul_id =? ve varlik_hisse_sembol =?' );
+                            $ veri -> execute ( dizi ( $ _SESSION [ 'kul_id' ], $ h_td_sembol [ $ sayi ]));
+                            $ v = $ veri -> fetchAll ( PDO :: FETCH_ASSOC );
+                            $ say = $ veri -> rowCount ();
+                            $ miktar = 0 ;
+                            if ( $ say > 0 ) {
+                            $ miktar = 0 ;
+                            if  ( $ say > 0 ) {
+                                foreach ( $ v  ,  $ varlik_elde olarak );
+                                $ miktar = $ varlik_elde [ 'varlik_elde' ];
+                            }
+                           //
+                            echo  "
+                            <td class = 'text-center' id = 'hisse_sat_ " . $ sayi . "'>
+                                <button id = 'btn_hisse_sat_ " . $ sayi . "' type = 'button' class = 'btn btn-tehlikeli' href = '# modalsatForm "şeklindeki kalıcı mod . $ sayi . "' " ;
+                            if ( $ miktar == 0 ) { echo  "devre dışı başlık = 'Portföyünüzde Bulunmamakta.'" ; }
+                            echo  "> SAT </button>
+                                
+                                <div class = 'modal-blok modal-başlık-renk modal-blok-başarı mfp-hide' id = 'modalsatForm " . $ sayi . "'>
+                                $ miktar = $ varlik_elde [ 'varlik_elde' ];
+                            } ?>
+                            < td  class = ' text-center ' id = ' hisse_sat_ <? php  echo  $ sayi ; ?> ' >
+                                < düğme  id = ' btn_hisse_sat_ <? php  echo  $ sayi ; ?> ' type =' düğme '
+                                        class = ' btn btn-tehlikeli-formlu modal '
+                                        href = ' #modalsatForm <? php  echo  $ sayi ; ?> ' <? php  if ( $ miktar == 0 ) {
+                                    echo  "devre dışı başlık = 'Portföyünüzde Bulunmamakta." " ;
+                                } ?  >> SAT
+                                </ düğmesi >
+                                < div  class = ' modal-blok modal-başlık-renk modal-blok-başarı mfp-hide '
+                                     id = ' modalsatForm <? php  echo  $ sayi ; ?> ' >
+                                    < section  class = ' panel ' >
+                                            <header class = 'panel heading'>
+                                                <h4 class = 'panel-title' id = 'formModalLabel'> Cts </h4>
+                                            </ Pompa çıkışı>
+                                            <div class = 'panel-body'>
+                                                <! - UYARI ->
+                                                <div id = 'hisse_sat_alert'> </div>
+                                                <! - UYARI ->
+                                                <form id = 'hisse_sat_form_ " . $ sayi . "' class = 'mb-4' novalidate = 'novalidate'>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Hisse Adı: </label>
+                                                        <label id = 'hisse_sat_form_sembol_ " . $ sayi . "' class = 'col-sm-7 metin merkezi mb-0'> " . $ h_td_sembol [ $ sayi ]. " </label>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Satış Tutarı: </label>
+                                                        <label id = 'hisse_deger_sat_ " . $ sayi . "' class = 'col-sm-7 metin merkezi mb-0'> " . convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]). " </label>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Portföyümdeki Hisse Adedi: </label>
+                                                        <label id = 'hisse_varlik_elde_ " . $ sayi . "' class = 'col-sm-4 text-right mb-0'> " ;
+                            echo  $ miktar ;
+                            echo  "</label>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Satilmak İstenen Şart: </label>
+                                                        <div class = 'col-sm-7 metin merkezi'>
+                                                            <input id = 'range_sat " . $ sayi . "' type = 'aralık' dk = '" ;
+                            if ( $ miktar > 0 ) {
+                                yankı  "1" ;
+                            }
+                            başka {
+                                yankı  "0" ;
+                            }
+                            echo  "'max ='" . $ miktar . "'onchange =' sat_hesapla" . $ sayi . "() '/>
+                                                            <output id = 'rangevaluesat " . $ sayi . "'> " . tavan ( $ miktar / 2 ). " </output>
+                                                        </ Div>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Komisyon (Binde 3): </label>
+                                                        <label id = 'komisyonsat " . $ sayi . "' class = 'col-sm-4 text-right mb-0'> " . round ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * ( $ komisyon - 1 ) * ceil ( $ miktar / 2 ), 2 ). "</label> <span class = 'col-sm-4 metin-sol mb-0'> & # x20BA; </span>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-4 metin-sol metin-sm-sağ mb-0'> Toplam Alinacak Tutar: </label>
+                                                        <label id = 'toplam_odenecek_sat_tutar " . $ sayi . "' class = 'col-sm-4 metin-sağ mb-0'>
+                                                        " . Yuvarlak ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * ceil ( $ road / 2 ) - floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * ceil ( $ road / 2 ) * ( $ komisyon - 1 ) , 2 ). "
+                                                       </ Label>
+                                                       <Script>
+                                                        fonksiyon sat_hesapla " . $ sayi . " () {
+                                                            var sat = $ ('# hisse_deger_sat_ " . $ sayi . "') .text ();
+                                                            var miktarsat = $ ('# range_sat " . $ sayi . "') .val ();
+                                                            $ ('# rangevaluesat " . $ sayi . "') .text ($ ('# range_sat " . $ sayi . "') .val ());
+                                                            $ ('# komisyonsat " . $ sayi . "') .text ((sat * miktarsat * (" . $ komisyon . " -1)). toFixed (2));
+                                                            $ ('# toplam_odenecek_sat_tutar " . $ sayi . "') .text ((sat * miktarsat-sat * miktarsat * (" . $ komisyon . " -1)). toFixed (2));
+                                                        }
+                                                        </ Script>
+                                                       <span class = 'col-sm-4 metin-sol mb-0'> & # x20BA; </span>
+                                                    </ Div>
+                                                    <div class = 'form-grup satırı align-items-center'>
+                                                        <label class = 'col-sm-12 metin merkezi mb-0'>    
+                                                        " ;
+                            if ( $ miktar == 0 ) { echo  "Yeterli Hisse Portföyünüzde Bulun ayrıntılı." ; }
+                            echo  "                                                    
+                                                        </ Label>
+                                                    </ Div>
+                                                </ Form>
+                                            </ Div>
+                                            <div class = 'panel-footer'>
+                                                <div class = 'row'>
+                                                    <div class = 'col-md-12 text-right'>
+                                                        <düğme türü = 'düğme' sınıf = 'btn btn-light modal-dismiss'> Kapat </button>
+                                                        <button type = 'button' id = 'hisse_sat_btn_ " . $ sayi . "' type = 'gönder' sınıf = 'btn btn-danger'onclick = " . chr ( 34 ). " satim_btn_func (" . "' " . $ sayi . "'" . ")" . chr ( 34 );
+                            eğer ( $ miktar == 0 ) { echo  "devre dışı" ; }
+                            echo  "> Cts </button>
+                                        < header  class = ' panel-heading ' > < h4  class = ' panel-title ' id = ' formModalLabel ' >
+                                                Cts </ h4 > </ üstbilgi >
+                                        < div  class = ' panel-body ' >  <! - UYARI ->
+                                            < div  id = ' hisse_sat_alert ' > </ div >  <! - UYARI ->
+                                            < form  id = ' hisse_sat_form_ <? php  echo  $ sayi ; ?> ' class =' mb-4 '
+                                                  novalidate = ' novalidate ' >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Hisse
+                                                        Adı: </ label >  < label
+                                                            id = ' hisse_sat_form_sembol_ <? php  echo  $ sayi ; ?> '
+                                                            class = ' col-sm-7 metin merkezi mb-0 ' > <? php  echo  $ h_td_sembol [ $ sayi ]; ?> </ label >
+                                                </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Satış
+                                                        Tutarı: </ etiket >  < etiket
+                                                            id = ' hisse_deger_sat_ <? php  echo  $ sayi ; ?> '
+                                                            class = ' col-sm-7 metin merkezi mb-0 ' > <? php  echo  convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]); ?> </ label >
+                                                </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Portföyümdeki
+                                                        Hisse Adedi: </ etiket >  < etiket
+                                                            id = ' hisse_varlik_elde_ <? php  echo  $ sayi ; ?> '
+                                                            class = ' col-sm-4 metin-sağ mb-0 ' > <? php  echo  $ miktar ; ?> </ label >
+                                                </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Satilmak
+                                                        İstenen İstatistik: </ label >
+                                                    < div  class = ' col-sm-7 text-center ' > < giriş
+                                                                id = ' range_sat <? php  echo  $ sayi ; ?> ' type =' aralık '
+                                                                min = ' <? if ( $ miktar > 0 ) {  
+                                                                    yankı  "1" ;
+                                                                } başka {
+                                                                    yankı  "0" ;
+                                                                } ?> ' max =' <? php  echo  $ miktar ; ?> '
+                                                                onchange = ' sat_hesapla <? php  echo  $ sayi ; ?> () '/>
+                                                        < output  id = ' rangevaluesat <? php  echo  $ sayi ; ?> ' > <? Php?  Echo  ceil ( $ road / 2 ); ?> </ output >
+                                                    </ div >
+                                                </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Komisyon (Binde
+                                                        3): </ label >  < label  id = ' komisyonsat <? Php  echo  $ sayi ; ?> '
+                                                                            class = ' col-sm-4 text-right mb-0 ' > <? php  echo  round ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ]))) * ( $ komisyon - 1 ) * tavan ( $ miktar / 2 ), 2 ); ?> </ label > < span
+                                                            class = ' col-sm-4 metin-sol mb-0 ' > & # x20BA; </ span > </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-4 metin-sol metin-sm-sağ mb-0 ' > Toplam
+                                                        Alinacak Tutar: </ label >  < label
+                                                            id = ' toplam_odenecek_sat_tutar <? php  echo  $ sayi ; ?> '
+                                                            sınıf = ' col-sm-4 metin sağ mb-0 ' > <? php?  yankı  yuvarlak ( floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * ceil ( $ road / 2 ) - floatval ( convert_virgül_nokta ( $ h_td_fiyat_id_deger [ 0 ])) * tavan ( $ miktar / 2 ) * ( $ komisyon - 1 ), 2 );?>  </ label >
+                                                    < script  type = " text / javascript " >  fonksiyon  sat_hesapla <? php  echo  $ sayi ; ?> ( )  {
+                                                            var  sat  =  $ ( '#hisse_deger_sat_ <? php  echo  $ sayi ; ?> ' ) . metin ( ) ;
+                                                            var  miktarsat  =  $ ( '#range_sat <? php  echo  $ sayi ; ?> ' ) . val ( ) ;
+                                                            $ ( '#rangevaluesat <? php  echo  $ sayi ; ?> ' ) . metin ( $ ( '#range_sat <? php  echo  $ sayi ; ?> ' ) . val ( ) ) ;
+                                                            $ ( '#komisyonsat <? php  echo  $ sayi ; ?> ' ) . metin ( ( sat * miktarsat * ( <? php  echo  $ komisyon ; ?>  - 1 ) ) . toFixed ( 2 ) ) ;
+                                                            $ ( '#toplam_odenecek_sat_tutar <? php  echo  $ sayi ; ?> ' ) . metin ( ( sat * miktarsat  -  sat * miktarsat * ( <? php  echo  $ komisyon ; ?>  - 1 ) ) . toFixed ( 2 ) ) ;
+                                                        }  </ script >
+                                                    < span  class = ' col-sm-4 text-left mb-0 ' > & # x20BA; </ span > </ div >
+                                                < div  class = ' form-group row align-items-center ' > < etiket
+                                                            class = ' col-sm-12 metin merkezi mb-0 ' >  <? php  if ( $ miktar == 0 ) {
+                                                            echo  "Yeterli Hisse Portföyünüzde Bulunsanız." ;
+                                                        } ?>  </ label > </ div >
+                                            </ form >
+                                        </ div >
+                                        < div  class = ' panel-footer ' >
+                                            < div  class = ' row ' >
+                                                < div  class = ' col-md-12 text-right ' >
+                                                    < düğme  türü = ' düğme ' sınıf = ' btn btn-light modal-dismiss ' > Kapat
+                                                    </ düğmesi >
+                                                    < düğme  türü = ' düğme ' id = ' hisse_sat_btn_ <? php  echo  $ sayi ; ?> '
+                                                            type = ' gönder ' sınıf = ' btn btn-danger '
+                                                            onclick = " satim_btn_func (' <? php  echo  $ sayi ; ?> ') " <? php  if ( $ miktar == 0 ) {
+                                                        yankı  "devre dışı" ;
+                                                    } ?  >> Cts
+                                                    </ düğmesi >
+                                                </ div >
+                                            </ div >
+                                        </ div >
+                                    </ bölüm >
+                                </ div >
+                            </td> " ;
+                            ?>
+                            <? Php
+                        }
+                        }
+                        ?>
+                            </ td >  <? php }
+                        } ?>
+                    </ tbody >
+                </ tablo >
+                < script  type = " text / javascript " >
+                    işlev  alim_btn_func ( hayır )
+                    {
+                < script  type = " text / javascript " >  fonksiyon  alim_btn_func ( no )  {
+                        var  veri  =  {
+                            'sembol' : belge . getElementById ( 'hisse_alim_form_sembol_' + hayır ) . innerText ,
+                            'alis_tutar' : belge . getElementById ( 'hisse_deger_alim_' + hayır ) . innerText ,
+                            'alis_miktar' : belge . getElementById ( 'rangevalue' + hayır ) . innerText ,
+                            'alis_komisyon' : belge . getElementById ( 'komisyon' + no ) . innerText ,
+                            'alis_toplam' : belge . getElementById ( 'toplam_odenecek_alim_tutar' + hayır ) . innerText ,
+                            'sembol' : belge . getElementById ( 'hisse_alim_form_sembol_' + hayır ) . innerText ,  
+                            'alis_tutar' : belge . getElementById ( 'hisse_deger_alim_' + hayır ) . innerText ,  
+                            'alis_miktar' : belge . getElementById ( 'rangevalue' + hayır ) . innerText ,  
+                            'alis_komisyon' : belge . getElementById ( 'komisyon' + no ) . innerText ,  
+                            'alis_toplam' : belge . getElementById ( 'toplam_odenecek_alim_tutar' + hayır ) . innerText ,  
+                            'kul_id' : $ ( "#anasayfa_kul_id" ) . val ( )
+                        }
+                        $ . ajax ( {
+@@ -386,14 +351,14 @@ function alim_btn_func (no)
+                            }
+                        } ) ;
+                    }
+                    fonksiyon satim_btn_func ( hayır ) 
+                    {
+
+                    fonksiyon satim_btn_func ( no ) {  
+                        var  veri  =  {
+                            'sembol' : belge . getElementById ( 'hisse_sat_form_sembol_' + hayır ) . innerText ,
+                            'sat_tutar' : belge . getElementById ( 'hisse_deger_sat_' + no ) . innerText ,
+                            'sat_miktar' : belge . getElementById ( 'rangevaluesat' + no ) . innerText ,
+                            'sat_komisyon' : belge . getElementById ( 'komisyonsat' + hayır ) . innerText ,
+                            'sat_toplam' : belge . getElementById ( 'toplam_odenecek_sat_tutar' + hayır ) . innerText ,
+                            'sembol' : belge . getElementById ( 'hisse_sat_form_sembol_' + hayır ) . innerText ,  
+                            'sat_tutar' : belge . getElementById ( 'hisse_deger_sat_' + no ) . innerText ,  
+                            'sat_miktar' : belge . getElementById ( 'rangevaluesat' + no ) . innerText ,  
+                            'sat_komisyon' : belge . getElementById ( 'komisyonsat' + hayır ) . innerText ,  
+                            'sat_toplam' : belge . getElementById ( 'toplam_odenecek_sat_tutar' + hayır ) . innerText ,  
+                            'kul_id' : $ ( "#anasayfa_kul_id" ) . val ( )
+                        }
+                        $ . ajax ( {
+@@ -404,9 +369,9 @@ işlevi satim_btn_func (no)
+                                $ ( "#hisse_sat_alert" ) . html ( cevap ) . gizle ( ) . fadeIn ( 700 ) ;
+                            }
+                        } ) ;
+                    }
+                </ script >
+                    }  </ script >
+            </ div >
+        </ bölüm >
+    </ bölüm >
+    <? php?  içermektedir  "inc / footer.php" ; ?>
+</ bölüm >
+<? php?  içermektedir  "inc / footer.php" ; ?> 
+
+---------------------------------------------------------------LİGLER-------------------------------------------------------
+DEMO-2 de eklenilen kısım burasıdır.
+
+**PHP KODU
+<? Php
+içerir  "inc / header.php" ;
+kullanicikontrol ();
+?>
+    < section  role = " ana " sınıf = " içerik-gövde " >
+        < div  class = " conteiner " >
+            < div  class = " col-md " >
+                < section  class = " panel panel-info " >
+                    < header  class = " panel-heading " >
+                        < h2  class = " panel-title " > Geçmiş Alımlar </ h2 >
+                        < div  class = " panel-actions " >
+                            < Bir  href = " # " sınıfı =" panel aksiyon panel aksiyon geçiş " veri panel mafsallı > </ a >
+                        </ div >
+                    </ header >
+                    < div  class = " panel-body " >
+                        < table  class = " table tablo-bordered tablo-çizgili mb-none " id = " datatable-default " >
+                            < Thead >
+                            < tr >
+                                < th > Sıra </ th >
+                                < th > Hisse Adı </ th >
+                                < th > Değer </ th >
+                                < th > Şart </ th >
+                                < th > Toplam Tutar </ th >
+                                < th > Zaman </ th >
+                            </ tr >
+                            </ thead >
+                            < tbody >
+                            <? Php
+                            $ sayi = 0 ;
+                            $ veri_gecmis_alim = $ db -> hazırlayın ( 'SELECT `alim_hisse_sembol`,` alim_hisse_deger`, `alim_hisse_lot`,` alim_hisse_toplam_tutar`, `alim_zaman` FROM` alim` WHERE `alim_hisul_id` =? `` limit 100 '' );
+                            $ veri_gecmis_alim -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                            $ V_gecmis_alim = $ veri_gecmis_alim -> fetchAll ( PDO :: FETCH_ASSOC );
+                            foreach ( $ v_gecmis_alim  olarak  $ gecmis_alim ) {
+                                Eko
+                                    "<Tr>
+                                <td class = 'text-center' id = 'gecmis_alim_sira_ " . $ sayi . "'> " . ( $ sayi + 1 ). " </td>
+                                <td class = 'text-center' id = 'gecmis_alim_hisse_ " . $ sayi . "'> " . $ gecmis_alim [ 'alim_hisse_sembol' ]. " </td>
+                                <td class = 'text-center' id = 'gecmis_alim_deger_ " . $ sayi . "'> " . $ gecmis_alim [ 'alim_hisse_deger' ]. " & # x20BA; </td>
+                                <td class = 'text-center' id = 'gecmis_alim_miktar_ " . $ sayi . "'> " . $ gecmis_alim [ 'alim_hisse_lot' ]. " </td>
+                                <td class = 'text-center' id = 'gecmis_alim_toplam_ " . $ sayi . "'> " . $ gecmis_alim [ 'alim_hisse_toplam_tutar' ]. " & # x20BA; </td>
+                                <td class = 'text-center' id = 'gecmis_alim_zaman_ " . $ sayi . "'> " . ( yeni \ DateTime ( $ gecmis_alim [ 'alim_zaman' ])) -> biçim ( 'dmY H: i: s' ) . PHP_EOL . "</td>
+                                    </tr> " ;
+                                $ sayi ++;
+                            }
+                            ?>
+                            </ tbody >
+                        </ tablo >
+                    </ div >
+                </ bölüm >
+                < section  class = " panel panel-danger " >
+                    < header  class = " panel-heading " >
+                        < h2  class = " panel-title " > Geçmiş Satımlar </ h2 >
+                        < div  class = " panel-actions " >
+                            < Bir  href = " # " sınıfı =" panel aksiyon panel aksiyon geçiş " veri panel mafsallı > </ a >
+                        </ div >
+                    </ header >
+                    < div  class = " panel-body " >
+                        < table  class = " table tablo-bordered tablo-çizgili mb-none " id = " datatable- default " >
+                        < table  class = " table table-bordered table- strip mb-none " id = " datatable- tabletools " >
+                            < Thead >
+                            < tr >
+                                < th > Sıra </ th >
+                                < th > Hisse Adı </ th >
+                                < th > Değer </ th >
+                                < th > Şart </ th >
+                                < th > Toplam Tutar </ th >
+                                < th > Zaman </ th >
+                            </ tr >
+                            </ thead >
+                            < tbody >
+                            <? Php
+                            $ sayi = 0 ;
+                            $ Veri_gecmis_satim = $ db -> hazırlamak ( '? Satim`' DAN `satim_hisse_sembol`,` satim_hisse_deger`, `satim_hisse_lot`,` satim_hisse_toplam_tutar`, `satim_zaman` SEÇ WHERE` satim_kul_id` = `satim_zaman` azalan sınırı 100 ile düzeni' ) ;
+                            $ veri_gecmis_satim -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                            $ V_gecmis_satim = $ veri_gecmis_satim -> fetchAll ( PDO :: FETCH_ASSOC );
+                            foreach ( $ v_gecmis_satim  olarak  $ gecmis_satim ) {
+                                Eko
+                                    "<Tr>
+                                <td class = 'text-center' id = 'gecmis_satim_sira_ " . $ sayi . "'> " . ( $ sayi + 1 ). " </td>
+                                <td class = 'text-center' id = 'gecmis_satim_hisse_ " . $ sayi . "'> " . $ gecmis_satim [ 'satim_hisse_sembol' ]. " </td>
+                                <td class = 'text-center' id = 'gecmis_satim_deger_ " . $ sayi . "'> " . $ gecmis_satim [ 'satim_hisse_deger' ]. " & # x20BA; </td>
+                                <td class = 'text-center' id = 'gecmis_satim_miktar_ " . $ sayi . "'> " . $ gecmis_satim [ 'satim_hisse_lot' ]. " </td>
+                                <td class = 'text-center' id = 'gecmis_satim_toplam_ " . $ sayi . "'> " . $ gecmis_satim [ 'satim_hisse_toplam_tutar' ]. " & # x20BA; </td>
+                                <td class = 'text-center' id = 'gecmis_satim_zaman_ " . $ sayi . "'> " . ( yeni \ DateTime ( $ gecmis_satim [ 'satim_zaman' ])) -> biçim ( 'dmY H: i: s' ) . PHP_EOL . "</td>
+                                    </tr> " ;
+                                $ sayi ++;
+                            }
+                            ?>
+                            </ tbody >
+                        </ tablo >
+                    </ div >
+                </ bölüm >
+            </ div >
+        </ div >
+    </ bölüm >
+    <! - KODLAR BURAYA ->
+<? php?  içermektedir  "inc / footer.php" ; ?>
+<? Php
+içerir  "inc / header.php" ;
+kullanicikontrol ();
+?>
+    < section  role = " ana " sınıf = " içerik-gövde " >
+        < div  class = " conteiner " >
+            < div  class = " col-md " >
+                < section  class = " panel panel uyarısı " >
+                    <? Php
+                    $ veri = $ db -> hazırlayın ( 'SELECT kul_lig_id FROM kullanicilar WHERE kul_Id =?' );
+                    $ veri -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                    $ v = $ veri -> fetchAll ( PDO :: FETCH_ASSOC );
+                    foreach ( $ V  olarak  $ Ligler );
+                    //
+                    $ veril = $ db -> hazırlamak ( 'SELECT lig_baslik FROM ligler WHERE lig_id =?' );
+                    $ veril -> execute ( dizi ( $ ligler [ 'kul_lig_id' ]));
+                    $ Vl = $ Veril -> fetchAll ( PDO :: FETCH_ASSOC );
+                    $ say_ = $ veril -> rowCount ();
+                    foreach ( $ vl  olarak  $ liglerl );
+                    ?>
+                    < header  class = " panel-heading " >
+                        < h2  class = " panel-title " > Ligim - <? php  if ( $ say_ > 0 ) {
+                                echo  $ liglerl [ 'lig_baslik' ];
+                            } ?> </ h2 >
+                        < div  class = " panel-actions " >
+                            < Bir  href = " # " sınıfı =" panel aksiyon panel aksiyon geçiş " veri panel mafsallı > </ a >
+                        </ div >
+                    </ header >
+                    < div  class = " panel-body " >
+                        < div  class = " tabloya duyarlı " >
+                            < table  class = " table table-condensed mb-none " >
+                                < Thead >
+                                < tr >
+                                    < th  class = ' metin merkezi ' > # </ th >
+                                    < th  class = ' metin merkezi ' > Reklam </ th >
+                                    < th  class = ' metin merkezi ' > Soyad </ th >
+                                    < th  class = ' metin merkezi ' > Yatırımcı / Yönetici </ th >
+                                    < th  class = ' metin merkezi ' > Toplam Kazanç </ th >
+                                </ tr >
+                                </ thead >
+                                < tbody >
+                                <? Php
+                                if ( $ ligler [ 'kul_lig_id' ] == null ) {
+
+                                } başka {
+                                    $ sayi = 0 ;
+                                    $ veri_lig = $ db -> hazırla ( 'SELECT üst (kullanicilar.kul_Ad) reklam olarak, üst (kullanicilar.kul_Soyad) soyad olarak, toplam (satim.satim_kar_zarar) kazanc FROM kullanicilar INNER JOIN satim.satim_kul_id = kullanicilar.kul_Id NEREDE kul_lig_id = 1 GRUP kul_Id ORDER tarafından sum (satim.satim_kar_zarar) tarafından DESC
+' );
+                                    /////
+                                    $ veri_lig_yon = $ db -> hazırla ( 'SELECT `lig_yonetici_id` ligler'DEN NEREDE lig_id` =?' );
+                                    $ veri_lig_yon -> execute ( dizi ( $ ligler [ 'kul_lig_id' ]));
+                                    $ V_lig_yon = $ veri_lig_yon -> fetchAll ( PDO :: FETCH_ASSOC );
+                                    foreach ( $ v_lig_yon  olarak  $ lig_yon );
+                                    /////
+                                    $ veri_lig = $ db -> hazırla ( 'SELECT kullanicilar.kul_Id kimlik olarak, üst (kullanicilar.kul_Ad) reklam olarak, üst (kullanicilar.kul_Soyad) soyad olarak, toplam (satim.satim_kar_zarar) kazanc FROM kullanicilar INNER JOIN .satim_kul_id = kullanicilar.kul_Id NEREDE kul_lig_id =? GROUP KUL_Id ORDER tarafından sum (satim.satim_kar_zarar) DESC ' ) tarafından;
+                                    $ veri_lig -> execute ( dizi ( $ ligler [ 'kul_lig_id' ]));
+                                    $ V_lig = $ veri_lig -> fetchAll ( PDO :: FETCH_ASSOC );
+                                    $ say_lig = $ veri_lig -> rowCount ();
+                                    ///
+                                    foreach ( $ v_lig  olarak  $ lig ) {
+                                        Eko
+                                            "<Tr>
+                                <td class = 'text-center' id = 'lig_baslik_ " . $ sayi . "'> " . ( $ sayi + 1 ). " </td>
+                                <td class = 'text-center' id = 'lig_baslik_ " . $ sayi . "'> " . $ lig [ 'ad' ]. " </td>
+                                <td class = 'text-center' id = 'lig_bosluk_ " . $ sayi . "'> " . $ lig [ 'soyad' ]. " </td>
+                                <td class = 'text-center' id = 'lig_yon_ " . $ sayi . "'> " ;
+                                        if ( $ lig [ 'id' ] == $ lig_yon [ 'lig_yonetici_id' ]) {
+                                            echo  "Lig Yöneticisi" ;
+                                        }
+                                        başka {
+                                            echo  "Yatırımcı" ;
+                                        }
+                                        echo  "</td>
+                                <td class = 'text-center' id = 'lig_kazanc_ " . $ sayi . "'> " . $ lig [ 'kazanc' ]. " TL </td>
+                                    </tr> " ;
+                                        $ sayi ++;
+                                    }
+                                }
+                                ?>
+                                </ tbody >
+                            </ tablo >
+                        </ div >
+                    </ div >
+                </ bölüm >
+            </ div >
+        </ div >
+    </ bölüm >
+    <! - KODLAR BURAYA ->
+<? php?  içermektedir  "inc / footer.php" ; ?>
+
+
+---------------------------------------------------SIRALAMA İŞLEMLERİ------------------------------------------------------
+**PHP KODU
+<? Php
+içerir  "inc / header.php" ;
+?>
+    < section  role = " ana " sınıf = " içerik-gövde " >
+        < div  class = " conteiner " >
+            < div  class = " tabs " >
+                < ul  class = " nav nav-tabs nav-justified " >
+                    < li  class = " active " >
+                        < Bir  href = " #kullanici " veri-geçiş =" sekmesi " class =" text-center " > KULLANICI Sıralaması </ a >
+                    </ li >
+                    < li >
+                        < Bir  href = " #lig " veri geçiş =" sekme " class =" text-center " > LİG Sıralaması </ a >
+                    </ li >
+                </ ul >
+                < div  class = " sekme içeriği " >
+                    < div  id = " kullanici " class = " sekme bölmesi etkin " >
+                        < div  class = " tabs tabs-danger " >
+                            < ul  class = " nav nav-tabs nav-justified " >
+                                < li  class = " active " >
+                                    < Bir  href = " #kullanici_gun " veri geçiş =" sekme " class =" text-center " > GÜNLÜK </ a >
+                                </ li >
+                                < li >
+                                    < Bir  href = " #kullanici_hafta " veri geçiş =" sekme " class =" text-center " > HAFTALIK </ a >
+                                </ li >
+                                < li >
+                                    < Bir  href = " #kullanici_ay " veri geçiş =" sekme " class =" text-center " > AYLIK </ a >
+                                </ li >
+                                < li >
+                                    < Bir  href = " #kullanici_genel " veri geçiş =" sekme " class =" text-center " > GENEL </ a >
+                                </ li >
+                            </ ul >
+                            < div  class = " sekme içeriği sekmeleri-tehlike " >
+                                < div  id = " kullanici_gun " class = " sekme bölmesi etkin " >
+                                    < section  class = " panel " >
+                                        < div  class = " panel-body " >
+                                            < div  class = " tabloya duyarlı " >
+                                                < table  class = " table table-bordered " >
+                                                    < Thead >
+                                                    < tr >
+                                                        < th  class = " metin merkezi " > Sıra </ th >
+                                                        < th  class = " metin merkezi " > Reklam </ th >
+                                                        < th  class = " text-center " > Soyad </ th >
+                                                        < th  class = " metin merkezi " > Kazanç / Kayıp </ th >
+                                                    </ tr >
+                                                    </ thead >
+                                                    < tbody >
+                                                    <? Php
+                                                    $ sayi = 0 ;
+                                                    $ veri_gunluk_kul_sira = $ db -> hazırlayın ( 'ÜST SEÇ (kullanicilar.kul_Ad) OLARAK AD, ÜST (kullanicilar.kul_Soyad) AS SOYAD, SUM (satim.satim_kar_zarar) AS DURUM FROM satim INNER JOIN kullanicilar ON kullanicilar.kul_Id = satim.sat_. CURDATE () ve DATE_SUB (CURDATE (), ARALIK -1 GÜN) arasında satim_zaman NEREDEN satim_kul_id ORDER BY satim_kar_zarar DESC LIMIT 10 ' );
+                                                    $ veri_gunluk_kul_sira -> execute ( dizi ());
+                                                    $ V_gunluk_kul_sira = $ veri_gunluk_kul_sira -> fetchAll ( PDO :: FETCH_ASSOC );
+                                                    $ say_gunluk_kul_sira = $ veri_gunluk_kul_sira -> rowCount ();
+                                                    foreach ( $ v_gunluk_kul_sira  olarak  $ gunluk_kul_sira {)
+                                                        Eko
+                                                            "<Tr>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_Ad_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'AD' ]. " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_Soyad_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'SOYAD' ]. " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_TL_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'DURUM' ]. " TL </td>
+                                                                </ Tr> 
+                                                                " ;
+                                                        $ sayi ++;
+                                                    }
+                                                    ?>
+                                                    </ tbody >
+                                                </ tablo >
+                                            </ div >
+                                        </ div >
+                                    </ bölüm >
+                                </ div >
+                                < div  id = " kullanici_hafta " class = " sekme bölmesi " >
+                                    < section  class = " panel " >
+                                        < div  class = " panel-body " >
+                                            < div  class = " tabloya duyarlı " >
+                                                < table  class = " table table-bordered " >
+                                                    < Thead >
+                                                    < tr >
+                                                        < th  class = " metin merkezi " > Sıra </ th >
+                                                        < th  class = " metin merkezi " > Reklam </ th >
+                                                        < th  class = " text-center " > Soyad </ th >
+                                                        < th  class = " metin merkezi " > Kazanç / Kayıp </ th >
+                                                    </ tr >
+                                                    </ thead >
+                                                    < tbody >
+                                                    <? Php
+                                                    $ sayi = 0 ;
+                                                    $ veri_gunluk_kul_sira = $ db -> hazırlayın ( '
+ÜST OLARAK SEÇ (kullanicilar.kul_Ad), ÜSTÜN (ÜST (kullanicilar.kul_Soyad) SOYAD OLARAK, TOPLA (satim.satim_kar_zarar) SATIMDAN DURUM OLARAK 
+INNER JOIN kullanicilar ON kullanicilar.kul_Id = satim.satim_kul_id 
+DATE_SUB (DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 WEEK), INTERVAL -1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) GROUP BY satim_kul_id ORDER BY satim_kar_zarar DESC LIMIT 10 ' ) arasında;
+                                                    $ veri_gunluk_kul_sira -> execute ( dizi ());
+                                                    $ V_gunluk_kul_sira = $ veri_gunluk_kul_sira -> fetchAll ( PDO :: FETCH_ASSOC );
+                                                    $ say_gunluk_kul_sira = $ veri_gunluk_kul_sira -> rowCount ();
+                                                    foreach ( $ v_gunluk_kul_sira  olarak  $ gunluk_kul_sira {)
+                                                        Eko
+                                                            "<Tr>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_Ad_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'AD' ]. " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_Soyad_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'SOYAD' ]. " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_TL_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'DURUM' ]. " TL </td>
+                                                                </ Tr> 
+                                                                " ;
+                                                        $ sayi ++;
+                                                    }
+                                                    ?>
+                                                    </ tbody >
+                                                </ tablo >
+                                            </ div >
+                                        </ div >
+                                    </ bölüm >
+                                </ div >
+                                < div  id = " kullanici_ay " class = " sekme bölmesi " >
+                                    < section  class = " panel " >
+                                        < div  class = " panel-body " >
+                                            < div  class = " tabloya duyarlı " >
+                                                < table  class = " table table-bordered " >
+                                                    < Thead >
+                                                    < tr >
+                                                        < th  class = " metin merkezi " > Sıra </ th >
+                                                        < th  class = " metin merkezi " > Reklam </ th >
+                                                        < th  class = " text-center " > Soyad </ th >
+                                                        < th  class = " metin merkezi " > Kazanç / Kayıp </ th >
+                                                    </ tr >
+                                                    </ thead >
+                                                    < tbody >
+                                                    <? Php
+                                                    $ sayi = 0 ;
+                                                    $ veri_gunluk_kul_sira = $ db -> hazırlayın ( '
+ÜST OLARAK SEÇ (kullanicilar.kul_Ad), ÜSTÜN (ÜST (kullanicilar.kul_Soyad) SOYAD OLARAK, TOPLA (satim.satim_kar_zarar) SATIMDAN DURUM OLARAK 
+INNER JOIN kullanicilar ON kullanicilar.kul_Id = satim.satim_kul_id 
+DATE_SUB (DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 AY), INTERVAL -1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) GROUP BY satim_kul_id ORDER BY satim_kar_zarar DESC LIMIT 10 ' );
+                                                    $ veri_gunluk_kul_sira -> execute ( dizi ());
+                                                    $ V_gunluk_kul_sira = $ veri_gunluk_kul_sira -> fetchAll ( PDO :: FETCH_ASSOC );
+                                                    $ say_gunluk_kul_sira = $ veri_gunluk_kul_sira -> rowCount ();
+                                                    foreach ( $ v_gunluk_kul_sira  olarak  $ gunluk_kul_sira {)
+                                                        Eko
+                                                            "<Tr>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_Ad_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'AD' ]. " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_Soyad_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'SOYAD' ]. " </td>
+                                                        <td class = 'text-center' id = 'kaybedenler_gun_TL_ " . $ sayi . "'> " . $ gunluk_kul_sira [ 'DURUM' ]. " TL </td>
+                                                                </ Tr> 
+                                                                " ;
+                                                        $ sayi ++;
+                                                    }
+                                                    ?>
+                                                    </ tbody >
+                                                </ tablo >
+                                            </ div >
+                                        </ div >
+                                    </ bölüm >
+                                </ div >
+                                < div  id = " kullanici_genel " class = " sekme bölmesi " >
+                                    < section  class = " panel " >
+                                        < div  class = " panel-body " >
+                                            < div  class = " tabloya duyarlı " >
+                                                < table  class = " table table-bordered " >
+                                                    < Thead >
+                                                    < tr >
+                                                        < th  class = " metin merkezi " > Sıra </ th >
+                                                        < th  class = " metin merkezi " > Reklam </ th >
+                                                        < th  class = " text-center " > Soyad </ th >
+                                                        < th  class = " metin merkezi " > Kazanç / Kayıp </ th >
+                                                    </ tr >
+                                                    </ thead >
+                                                    < tbody >
+                                                    <? Php
+                                                    $ sayi = 0 ;
+                                                    $ veri_gunluk_kul_sira = $ db -> hazırlayın ( '
+ÜST OLARAK SEÇ (kullanicilar.kul_Ad), ÜSTÜN (ÜST (kullanicilar.kul_Soyad) SOYAD OLARAK, TOPLA (satim.satim_kar_zarar) SATIMDAN DURUM OLARAK 
+INNER JOIN kullanicilar ON kullanicilar.kul_Id = satim.satim_kul_id 
+DATE_SUB (DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 YIL), INTERVAL -1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) GROUP BY satim_kul_id ORDER BY satim_kar_zarar DESC LIMIT 10 ' );
+DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 YIL), INTERVAL -1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) arasında satim_zaman 
+GROUP BY satim_kul_id ORDER BY satim_kar_zarar DESC LIMIT 10 ' );
+                                                    $ veri_gunluk_kul_sira -> execute ( dizi ());
+                                                    $ V_gunluk_kul_sira = $ veri_gunluk_kul_sira -> fetchAll ( PDO :: FETCH_ASSOC );
+                                                    $ say_gunluk_kul_sira = $ veri_gunluk_kul_sira -> rowCount ();
+@@ -219,22 +220,26 @@
+                                                    < Thead >
+                                                    < tr >
+                                                        < th  class = " metin merkezi " > Sıra </ th >
+                                                        < th  class = " metin merkezi " > Reklam </ th >
+                                                        < th  class = " text-center " > Soyad </ th >
+                                                        < th  class = " metin merkezi " > Lig Adı </ th >
+                                                        < th  class = " metin merkezi " > Kazanç </ th >
+                                                    </ tr >
+                                                    </ thead >
+                                                    < tbody >
+                                                    <? Php
+                                                    için ( $ sayi = 0 ; $ sayi < 10 ; $ sayi ++) {
+                                                    $ sayi = 0 ;
+                                                    $ veri_lig_hafta_sira = $ db -> hazırlayın ( 'SELECT UPPER (ligler.lig_baslik) AS LIG, SUM (satim.satim_kar_zarar) AS DURUM'DAN SATIM INNER JOIN kullanicilar ON kullanicilar.kul_Id = satim.satim_kul_id INNER JOIN ligler ON kullanicilar.kul_Id = satim.satim_kul_id .kul_lig_id DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 WEEK), INTERVAL -1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) GROUP BY ligler.lig_id ORDER BY durum DESC LIMIT 10 ' ) arasında NEREDE satim_zaman ;
+                                                    $ veri_lig_hafta_sira -> execute ( dizi ());
+                                                    $ V_lig_hafta_sira = $ veri_lig_hafta_sira -> fetchAll ( PDO :: FETCH_ASSOC );
+                                                    $ say_lig_hafta_sira = $ veri_lig_hafta_sira -> rowCount ();
+                                                    foreach ( $ v_lig_hafta_sira  olarak  $ lig_hafta_sira {)
+                                                        Eko
+                                                            "<Tr>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = ' kazananlar_gun_Ad_ " . $ sayi . "'> Reklam </td>
+                                                        <td class = 'text-center' id = ' kazananlar_gun_Soyad_ " . $ sayi . "'> Soyad </td>
+                                                        <td class = 'text-center' id = 'kazananlar_gun_TL_ " . $ sayi . "'> TL </td>
+                                                    </ Tr> 
+                                                " ;
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = ' lig_hafta_Ad_ " . $ sayi . "'> " . $ lig_hafta_sira [ 'LIG' ]. " </td>
+                                                        <td class = 'text-center' id = ' lig_hafta_TL_ " . $ sayi . "'> " . $ lig_hafta_sira [ 'DURUM' ]. " TL </td>
+                                                                </ Tr> 
+                                                                " ;
+                                                        $ sayi ++ ;
+                                                    }
+                                                    ?>
+                                                    </ tbody >
+@@ -251,22 +256,26 @@
+                                                    < Thead >
+                                                    < tr >
+                                                        < th  class = " metin merkezi " > Sıra </ th >
+                                                        < th  class = " metin merkezi " > Reklam </ th >
+                                                        < th  class = " text-center " > Soyad </ th >
+                                                        < th  class = " metin merkezi " > Lig Adı </ th >
+                                                        < th  class = " metin merkezi " > Kazanç </ th >
+                                                    </ tr >
+                                                    </ thead >
+                                                    < tbody >
+                                                    <? Php
+                                                    için ( $ sayi = 0 ; $ sayi < 10 ; $ sayi ++) {
+                                                    $ sayi = 0 ;
+                                                    $ veri_lig_ay_sira = $ db -> hazırlayın ( 'SELECT UPPER (ligler.lig_baslik) AS LIG, SUM (satim.satim_kar_zarar) SAT. .kul_lig_id DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 AY), INTERVAL -1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) GROUP BY ligler.lig_id ORDER BY durum DESC LIMIT 10 ' ) arasında NEREDE satim_zaman ;
+                                                    $ veri_lig_ay_sira -> execute ( dizi ());
+                                                    $ V_lig_ay_sira = $ veri_lig_ay_sira -> fetchAll ( PDO :: FETCH_ASSOC );
+                                                    $ say_lig_ay_sira = $ veri_lig_ay_sira -> rowCount ();
+                                                    foreach ( $ v_lig_ay_sira  olarak  $ lig_ay_sira {)
+                                                        Eko
+                                                            "<Tr>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = 'kazananlar_hafta_Ad_ " . $ sayi . "'> Reklam </td>
+                                                        <td class = 'text-center' id = 'kazananlar_hafta_Soyad_ " . $ sayi . "'> Soyad </td>
+                                                        <td class = 'text-center' id = 'kazananlar_hafta_TL_ " . $ sayi . "'> TL </td>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = 'lig_ay_Ad_ " . $ sayi . "'> " . $ lig_ay_sira [ 'LIG' ]. " </td>
+                                                        <td class = 'text-center' id = 'lig_ay_TL_ " . $ sayi . "'> " . $ lig_ay_sira [ 'DURUM' ]. " TL </td>
+                                                                </ Tr> 
+                                                                " ;
+                                                        $ sayi ++;
+                                                    }
+                                                    ?>
+                                                    </ tbody >
+@@ -284,22 +293,26 @@
+                                                    < Thead >
+                                                    < tr >
+                                                        < th  class = " metin merkezi " > Sıra </ th >
+                                                        < th  class = " metin merkezi " > Reklam </ th >
+                                                        < th  class = " text-center " > Soyad </ th >
+                                                        < th  class = " metin merkezi " > Lig Adı </ th >
+                                                        < th  class = " metin merkezi " > Kazanç </ th >
+                                                    </ tr >
+                                                    </ thead >
+                                                    < tbody >
+                                                    <? Php
+                                                    için ( $ sayi = 0 ; $ sayi < 10 ; $ sayi ++) {
+                                                    $ sayi = 0 ;
+                                                    $ veri_lig_genel_sira = $ db -> hazırlayın ( 'SELECT UPPER (ligler.lig_baslik) AS LIG, SUM (satim.satim_kar_zarar) SAT. .kul_lig_id DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 YIL), INTERVAL -1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) GROUP BY ligler.lig_id ORDER BY durum DESC LIMIT 10 ' ) arasında NEREDE satim_zaman ;
+                                                    $ veri_lig_genel_sira -> execute ( dizi ());
+                                                    $ V_lig_genel_sira = $ veri_lig_genel_sira -> fetchAll ( PDO :: FETCH_ASSOC );
+                                                    $ say_lig_genel_sira = $ veri_lig_genel_sira -> rowCount ();
+                                                    foreach ( $ v_lig_genel_sira  olarak  $ lig_genel_sira {)
+                                                        Eko
+                                                            "<Tr>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = 'kazananlar_ay_Ad_ " . $ sayi . "'> Reklam </td>
+                                                        <td class = 'text-center' id = 'kazananlar_ay_Soyad_ " . $ sayi . "'> Soyad </td>
+                                                        <td class = 'text-center' id = 'kazananlar_ay_TL_ " . $ sayi . "'> TL </td>
+                                                        <td class = 'text-center'> " . ( $ sayi + 1 ). " </td>
+                                                        <td class = 'text-center' id = 'lig_genel_Ad_ " . $ sayi . "'> " . $ lig_genel_sira [ 'LIG' ]. " </td>
+                                                        <td class = 'text-center' id = 'lig_genel_TL_ " . $ sayi . "'> " . $ lig_genel_sira [ 'DURUM' ]. " TL </td>
+                                                                </ Tr> 
+                                                                " ;
+                                                        $ sayi ++;
+                                                    }
+                                                    ?>
+                                                    </ tbody >
+
+--------------------------------------PROFİL/ RESİM EKLEME / GÜNCELLEME İŞLEMLERİ-------------------------------------------
+
+**PHP KODU
+
+<? Php
+içerir  "inc / header.php" ;
+$ komisyon = 1.003 ;
+kullanicikontrol ();
+?>
+
+< section   role = " ana " sınıf = " içerik-gövde " >
+    < div  class = " container " >
+        < div  class = " row " >
+            < div  class = " col-md-4 col-lg-3 " >
+                < section  class = " panel " >
+                    < div  class = " panel-body " >
+                        < div  class = " row " >
+                            < div  class = " küçük-12 orta-2 büyük-2 sütun " >
+                                < div  class = " circle " >
+                                    <! - Kullanıcı Profili Resmi ->
+                                    < img  class = " profile-picture " src = " img /! log-user.jpg " width = " 250 " height = " 250 " >
+                                    <! - Varsayılan Resim ->
+                                    <! - <i class = "fa fa-kullanıcı fa-5x"> </i> ->
+                                </ div >
+                                < div  class = " p-image " >
+                                    < i  class = " fa fa-camera upload-button " > </ i >
+                                    < input  class = " dosya yükleme " type = " dosya " kabul et = " image / * " />
+                                </ div >
+                            </ div >
+                        </ div >
+                    </ div >
+                </ bölüm >
+                < section  class = " panel " >
+                    < header  class = " panel-heading " >
+                        < div  class = " panel-actions " >
+                            < Bir  href = " # " sınıfı =" panel aksiyon panel aksiyon geçiş " veri panel mafsallı > </ a >
+                            < Bir  href = " # " sınıfı =" panel aksiyon panel aksiyon kapatmak " veri panel kapatmak > </ a >
+                        </ div >
+                        < h2  class = " panel-title " > Bilgiler </ h2 >
+                    </ header >
+                    < div  class = " panel-body " >
+                        < ul  class = " basit kayıt sonrası " >
+                            < li >
+                                < div  class = " post-info " >
+                                    < div  class = " text-center " > Son 5 Çevrimiçi Olunan Tarih </ div >
+                                    <? Php
+                                    //
+                                    $ sayi = 0 ;
+                                    $ veri_tarih = $ db -> hazırlayın ( 'log'kul_id =? ve log_eylem = "Giriş" log_zaman DÜZENLEME log_zaman SELECT LIMC 5 " );
+                                    $ veri_tarih -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                                    $ V_tarih = $ veri_tarih -> fetchAll ( PDO :: FETCH_ASSOC );
+                                    foreach ( $ v_tarih   olarak  $ Tarih ve {)
+                                        echo "<div class = 'text-center'>" . ( yeni \ DateTime ( $ tarih [ 'log_zaman' ])) -> biçimi ( 'dmY H: i: s' ). PHP_EOL . "</div>" ;
+                                        $ sayi ++;
+                                    }
+                                    //
+                                    ?>
+                                </ div >
+                            </ li >
+                        </ ul >
+                    </ div >
+                </ bölüm >
+            </ div >
+            < div  class = " col-md-8 col-lg-6 " >
+                < div  class = " tabs " >
+                    < ul  class = " nav nav-tabs sekmeleri-birincil " >
+                        < li  class = " active " >
+                            < Bir  href = " #overview " veri geçiş =" sekme " > Kullanıcı Bilgileri </ a >
+                        </ li >
+                    </ ul >
+                    < div  class = " sekme içeriği " >
+                        < div  id = " genel bakış " class = " sekme bölmesi etkin " >
+                            <? Php
+                            $ veri_profil = $ db -> hazırlayın ( 'SELECT `kul_Ad`,` kul_Soyad`, `kul_Eposta`,` kul_CepNo`, `kul_DogumTar` FROM` kullanicilar WHERE `kul_Id` =?' );
+                            $ veri_profil -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                            $ V_profil = $ veri_profil -> fetchAll ( PDO :: FETCH_ASSOC );
+                            foreach ( $ v_profil   olarak  $ profil );
+                            ?>
+                            <! - UYARI ->
+                            < div  id = ' profil_alert ' > </ div >
+                            <! - UYARI ->
+                            < form  class = " form-horizontal " yöntem = " get " id = " profil_form_bilgi " >
+                                < alan kümesi >
+                                    < div  class = " form-group " >
+                                        < Label  class = " col-md-3 kontrol etiketli " için =" profilAd " > Reklam </ label >
+                                        < div  class = " col-md-8 " >
+                                            < input  type = " text " class = " form-control " id = " profilAd " value = " <? php  echo  $ profil [ 'kul_Ad' ]; ?> " >
+                                        </ div >
+                                    </ div >
+                                    < div  class = " form-group " >
+                                        < Label  class = " col-md-3 kontrol etiketi " için =" profilSoyad " > Soyad </ etiket >
+                                        < div  class = " col-md-8 " >
+                                            < input  type = " text " class = " form-control " id = " profilSoyad " değer = " <? php  echo  $ profil [ 'kul_Soyad' ]; ?> " >
+                                        </ div >
+                                    </ div >
+                                    < div  class = " form-group " >
+                                        < Etiket  sınıfı = " col-MD-3 kontrol etiketli " için =" profilEposta " > e-posta </ etiket >
+                                        < div  class = " col-md-8 " >
+                                            < input  type = " email " class = " form-control " id = " profilEposta " value = " <? php  echo  $ profil [ 'kul_Eposta' ]; ?> " >
+                                        </ div >
+                                    </ div >
+                                    < div  class = " form-group " >
+                                        < Label  class = " col-md-3 kontrol etiketi " için =" profilCepNo " > Cep Telefonu </ label >
+                                        < div  class = " col-md-8 " >
+                                            < input  type = " text " class = " form-control " id = " profilCepNo " value = " <? php  echo  $ profil [ 'kul_CepNo' ]; ?> " >
+                                        </ div >
+                                    </ div >
+                                    < div  class = " form-group " >
+                                        < Label  class = " col-md-3 kontrol etiketi " için =" profilDogumTar " > Doğum Tarihi </ label >
+                                        < div  class = " col-md-8 " >
+                                            < input  type = " date " class = " form-control " id = " profilDogumTar " value = " <? php  echo  $ profil [ 'kul_DogumTar' ]; ?> " >
+                                        </ div >
+                                    </ div >
+                                </ fieldset >
+                                < div  class = " panel-footer " >
+                                    < div  class = " konteyner sıvısı " >
+                                        < div  class = " col-md " >
+                                            < button  id = " profil_bilgi_kaydet_btn " type = " düğme " class = " btn btn-birincil btn-blok " <? php  echo  "onclick =" . chr ( 34 ). "profil_bilgi_kaydet ()" . chr ( 34 ); ?>  devre dışı bırakıldı > Kaydet </ düğmesi >
+                                        </ div >
+                                    </ div >
+                                </ div >
+                                < hr  class = " dotted tall " >
+                                < script  type = " text / javascript " >
+                                    işlev  profil_bilgi_kaydet ( ) {
+                                        var  veri  =  {
+                                            'profilAd' : belge . getElementById ( 'profilAd' ) . değeri ,
+                                            'profilSoyad' : belge . getElementById ( 'profilSoyad' ) . değeri ,
+                                            'profilEposta' : belge . getElementById ( 'profilEposta' ) . değeri ,
+                                            'profilCepNo' : belge . getElementById ( 'profilCepNo' ) . değeri ,
+                                            'profilDogumTar' : belge . getElementById ( 'profilDogumTar' ) . değeri ,
+                                            'kul_id' : $ ( "#anasayfa_kul_id" ) . val ( )
+                                        }
+                                        $ . ajax ( {
+                                            tür : 'POST' ,  url : 'settings / islem.php? islem = profil_bilgi_kaydet' ,  veri : veri ,  başarı : işlev  ( cevap )  {
+                                                $ ( "#profil_alert" ) . html ( cevap ) . gizle ( ) . fadeIn ( 700 ) ;
+                                            }
+                                        } ) ;
+                                    }
+                                </ script >
+                            </ form >
+                            <! - UYARI ->
+                            < div  id = ' profil_sifre_alert ' > </ div >
+                            <! - UYARI ->
+                            < form  class = " form-horizontal " yöntem = " get " id = " profil_form_sifre " >
+                                < h4  class = " mb-xlg " > Şifre girişi </ h4 >
+                                < fieldset  sınıfı = " mb-xl " >
+                                    < div  class = " form-group " >
+                                        < Label  class = " col-md-3 kontrol etiketi " için =" profileNewPassword " > Yeni Şifre </ label >
+                                        < div  class = " col-md-8 " >
+                                            < input  type = " password " class = " form-control " id = " profileNewPassword " >
+                                        </ div >
+                                    </ div >
+                                    < div  class = " form-group " >
+                                        < Label  class = " col-md-3 kontrol etiketi " için =" profileNewPasswordRepeat " > Yei Şifre Tekrar </ label >
+                                        < div  class = " col-md-8 " >
+                                            < input  type = " password " class = " form-control " id = " profileNewPasswordRepeat " >
+                                        </ div >
+                                    </ div >
+                                </ fieldset >
+                                < div  class = " panel-footer " >
+                                    < div  class = " konteyner sıvısı " >
+                                        < div  class = " col-md " >
+                                            < button  id = " profil_sifre_kaydet_btn " type = " düğme " class = " btn btn-birincil btn-blok " <? php  echo  "onclick =" . chr ( 34 ). "profil_sifre_kaydet ()" . chr ( 34 ); ?>  devre dışı bırakıldı > Kaydet </ düğmesi >
+                                        </ div >
+                                    </ div >
+                                </ div >
+                                < script  type = " text / javascript " >
+                                    işlev  profil_sifre_kaydet ( )  {
+                                        var  veri  =  {
+                                            'sifre' : belge . getElementById ( 'profileNewPassword' ) . değeri ,
+                                            'sifre_tekrar' : belge . getElementById ( 'profileNewPasswordRepeat' ) . değeri ,
+                                            'kul_id' : $ ( "#anasayfa_kul_id" ) . val ( )
+                                        }
+                                        $ . ajax ( {
+                                            tür : 'POST' ,  url : 'settings / islem.php? islem = profil_sifre_kaydet' ,  veri : veri ,  başarı : işlev  ( cevap )  {
+                                                $ ( "#profil_sifre_alert" ) . html ( cevap ) . gizle ( ) . fadeIn ( 700 ) ;
+                                            }
+                                        } ) ;
+                                    }
+                                </ script >
+                            </ form >
+                        </ div >
+                    </ div >
+                </ div >
+            </ div >
+            < div  class = " col-md-12 col-lg-3 " >
+                < h4  class = " mb-md " > Mali Bilgiler </ h4 >
+                < ul  class = " basit kart listesi mb-xlg " >
+                    < li  class = " info " >
+                        < h3 > <? php  echo  $ _SESSION [ 'bakiye' ]; ?> & # x20BA; </ h3 >
+                        < p > Toplam Varlığım </ p >
+                    </ li >
+                    < li  class = " birincil " >
+                        < h3 > 488 </ h3 >
+                        < h3 >
+                            <? Php
+                            $ veri_profil_elimdeki_lot = $ db -> hazırlayın ( 'SELECT sum (`alim_lot_satilmayan`) toplam_lot FROM` alim` WHERE `alim_kul_id` =?' );
+                            $ veri_profil_elimdeki_lot -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                            $ V_profil_elimdeki_lot = $ veri_profil_elimdeki_lot -> fetchAll ( PDO :: FETCH_ASSOC );
+                            foreach ( $ v_profil_elimdeki_lot   ,  $ profil_elimdeki_lot olarak );
+                            echo  $ profil_elimdeki_lot [ 'toplam_lot' ];
+                            ?>
+                        </ h3 >
+                        < p > Elimdeki Lot </ p >
+                    </ li >
+                    < li  class = " warning " >
+                        < h3  class = " fa fa-arrow-down " > % -4,36 </ h3 >
+                        <? Php
+                            //
+                            $ sayi = 0 ;
+                            $ veri_aktif_varlik = $ db -> hazırla ( 'SELECT * FROM `alim`den NEREDE alim_kul_id` =? ve alim_lot_satilmayan> 0 sipariş alim_lot_satilmayan desc' );
+                            $ veri_aktif_varlik -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                            $ V_aktif_varlik = $ veri_aktif_varlik -> fetchAll ( PDO :: FETCH_ASSOC );
+                            $ say_aktif_varlik = $ veri_aktif_varlik -> rowCount ();
+                            ////
+                            $ satilmayan_fiyat = 0 ;
+                            $ satilmayan_son_deger = 0 ;
+                            /////////////
+                            foreach ( $ v_aktif_varlik  olarak  $ aktif_varlik ) {
+                                ////
+                                $ aktif_varlik_fiyat = round (( $ aktif_varlik [ 'alim_hisse_toplam_tutar' ] / $ aktif_varlik [ 'alim_hisse_lot' ]), 2 );
+                                $ satilmayan_fiyat = $ satilmayan_fiyat + round (( $ aktif_varlik_fiyat * $ aktif_varlik [ 'alim_lot_satilmayan' ]), 2 );
+                                //
+                                $ son_deger = round ( bakiye_son ( $ aktif_varlik [ 'alim_hisse_sembol' ]), 2 );
+                                $ satilmayan_son_deger = $ satilmayan_son_deger + round (((( $ son_deger * $ aktif_varlik [ 'alim_lot_satilmayan' ]) - ( $ son_deger * $ aktif_varlik [ 'alim_lot_satilmayan' ]) * ( $ komisyon - 1 ), 2 );
+                                ///
+                            }
+                        $ toplam_varlik_kar = round (((( $ satilmayan_son_deger / $ satilmayan_fiyat ) - 1 ), 5 );
+                        echo  "<h3 class = '" ;
+                        if ( $ toplam_varlik_kar > 0 ) {
+                            echo  "fa fa-arrow-up" ;
+                        } elseif ( $ toplam_varlik_kar == 0 ) {
+                            echo  "fa fa-minus" ;
+                        } başka {
+                            echo  "fa fa-arrow-down" ;
+                        }
+                        echo  "'>" . $ toplam_varlik_kar . "% </h3>
+                        <p> Elimdeki Lotların Kar-Zarar Durumu </p>
+                    </ li >
+                    </li> " ;
+                            ?>
+                    < li  class = " success " >
+                        < h3 > % 16 </ h3 >
+                        < h3 >
+                            <? Php
+                            $ veri_profil_aylik_kar = $ db -> hazırlayın ( 'SELECT sum (`satim_kar_zarar`) durum olarak, sum (` satim_hisse_toplam_tutar`) toplam FROM `satim WHERE satim_zaman arasında DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 AY), INTERVAL 1 AY), INTERVAL 1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) ve `satim_kul_id` =? ' );
+                            $ veri_profil_aylik_kar -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                            $ V_profil_aylik_kar = $ veri_profil_aylik_kar -> fetchAll ( PDO :: FETCH_ASSOC );
+                            foreach ( $ v_profil_aylik_kar  olarak  $ profil_aylik_kar );
+                            echo  round (( $ profil_aylik_kar [ 'durum' ] / ( $ profil_aylik_kar [ 'toplam' ] - $ profil_aylik_kar [ 'durum' ])), 5 ). "% </h3>
+                        <p> Oğul 1 aydaki Kar-Zarar Durumum </p>
+                    </ li >
+                    </li> " ;
+                            ?>
+                    < li  class = " dark " >
+                        < h3 > % 1,025 </ h3 >
+                        < h3 >
+                            <? Php
+                            $ veri_profil_aylik_kar = $ db -> hazırlayın ( 'SELECT sum (`satim_kar_zarar`) durum olarak, sum (` satim_hisse_toplam_tutar`) toplam FROM `satim WHERE satim_zaman arasında DATE_SUB (DATE_SUB (CURDATE (), INTERVAL 1 AY), INTERVAL 1 AY), INTERVAL 1 DAY) ve DATE_SUB (CURDATE (), INTERVAL -1 DAY) ve `satim_kul_id` =? ' );
+                            $ veri_profil_aylik_kar -> execute ( dizi ( $ _SESSION [ 'kul_id' ]));
+                            $ V_profil_aylik_kar = $ veri_profil_aylik_kar -> fetchAll ( PDO :: FETCH_ASSOC );
+                            foreach ( $ v_profil_aylik_kar  olarak  $ profil_aylik_kar );
+                            echo  round (( $ profil_aylik_kar [ 'durum' ] / ( $ profil_aylik_kar [ 'toplam' ] - $ profil_aylik_kar [ 'durum' ])), 5 ). "% </h3>
+                        <p> Genel Kar-Zarar Durumum </p>
+                    </ li >
+                    </li> " ;
+                            ?>
+                </ ul >
+            </ div >
+        </ div >
